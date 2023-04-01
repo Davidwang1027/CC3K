@@ -5,13 +5,13 @@
 class Subject{
     std::vector<Observer*> observers;
 public:
-    virtual void notifyObservers() = 0;
-    virtual void attach(Observer* o) = 0;
+    virtual void notifyObservers();
+    virtual void attach(Observer* o);
 };
 
 void Subject::notifyObservers(){
     for (auto o : observers){
-        o->notify();
+        o->notify(*this);
     }
 }
 
