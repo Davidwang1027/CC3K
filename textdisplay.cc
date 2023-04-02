@@ -1,7 +1,11 @@
 #include "textdisplay.h"
-
+#include "celltype.h"
 void TextDisplay::notify(Subject& whoNotified){
-    // TODO
+    CellType = whoNotified.getType(); // change function name
+    switch (){
+
+    }
+
 }
 
 std::ostream& operator<<(std::ostream& out, const TextDisplay& td){

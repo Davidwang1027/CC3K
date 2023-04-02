@@ -7,7 +7,6 @@ class Entity : public Cell{
 private:
     int hp, atk, def;
 public:
-
     virtual void attack() = 0;
     virtual void move() = 0;
     int getHp() { return hp; };

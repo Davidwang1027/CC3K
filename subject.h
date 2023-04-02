@@ -4,6 +4,7 @@
 #include "observer.h"
 class Subject{
     std::vector<Observer*> observers;
+
 public:
     virtual void notifyObservers();
     virtual void attach(Observer* o);
