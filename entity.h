@@ -3,7 +3,7 @@
 
 #include "cell.h"
 
-class entity : public Cell{
+class Entity : public Cell{
 private:
     int hp, atk, def;
 public:
