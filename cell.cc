@@ -9,7 +9,7 @@ void Cell::setCoords(std::size_t r, std::size_t c){
     this->c = c;
 }
 
-void Cell::setType(char type){
+void Cell::setType(CellType type){
     this->type = type;
 }
 
@@ -21,7 +21,7 @@ std::size_t Cell::getCol(){
     return c;
 }
 
-char Cell::getType(){
+CellType Cell::getType(){
     return type;
 }
 
