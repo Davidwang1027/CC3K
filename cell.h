@@ -14,14 +14,14 @@ enum class CellType{
 
 class Cell : public Subject, public Observer{
     std::size_t r, c;
-    char type;
+    CellType type;
 public:
-    Cell(std::size_t r, std::size_t c, char type);
+    Cell(std::size_t r, std::size_t c, CellType type);
     void setCoords(std::size_t r, std::size_t c);
-    void setType(char type);
+    void setType(CellType type);
     std::size_t getRow();
     std::size_t getCol();
-    char getType();
+    CellType getType();
     void notify(Subject& whoNotified) override;
 };
 
