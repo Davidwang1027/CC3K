@@ -2,9 +2,9 @@
 #include "subject.h"
 #include "observer.h"
 
-Cell::Cell(size_t r, size_t c, char type) : r{ r }, c{ c }, type{ type }{}
+Cell::Cell(std::size_t r, std::size_t c, char type) : r{ r }, c{ c }, type{ type }{}
 
-void Cell::setCoords(size_t r, size_t c){
+void Cell::setCoords(std::size_t r, std::size_t c){
     this->r = r;
     this->c = c;
 }
@@ -13,11 +13,11 @@ void Cell::setType(char type){
     this->type = type;
 }
 
-size_t Cell::getRow(){
+std::size_t Cell::getRow(){
     return r;
 }
 
-size_t Cell::getCol(){
+std::size_t Cell::getCol(){
     return c;
 }
 
