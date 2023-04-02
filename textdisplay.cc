@@ -1,6 +1,10 @@
 #include "textdisplay.h"
-
+#include "celltype.h"
 void TextDisplay::notify(Subject& whoNotified){
+    CellType = whoNotified.getType(); // change function name
+    switch (){
+
+    }
 
 }
 
