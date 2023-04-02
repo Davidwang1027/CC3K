@@ -7,6 +7,7 @@ class Entity : public Cell{
 private:
     int hp, atk, def;
 public:
+    Entity(int hp, int atk, int def): atk{atk}, hp{hp}, def{def} {}
     virtual void attack() = 0;
     virtual void move() = 0;
     int getHp() { return hp; };

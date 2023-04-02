@@ -9,6 +9,7 @@ class Cell : public Subject, public Observer{
     CellType type;
 public:
     Cell(std::size_t r, std::size_t c, CellType type);
+    Cell();
     void setCoords(std::size_t r, std::size_t c);
     void setType(CellType type);
     std::size_t getRow();
