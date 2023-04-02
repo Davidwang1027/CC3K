@@ -10,8 +10,6 @@ enum class CellType{
     vampire, troll, goblin, dragon, merchant, phoenix// enemies
 };
 
-
-
 class Cell : public Subject, public Observer{
     std::size_t r, c;
     char type;
