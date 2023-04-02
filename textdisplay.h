@@ -8,7 +8,7 @@
 class TextDisplay : public Observer{
     std::vector<std::vector<char>> theDisplay;
 public:
-    void notify(Subject& whoNotified) override;
+    void notify(Subject<State>& whoNotified) override;
     friend std::ostream& operator<<(std::ostream& out, const TextDisplay& td);
 };
 
