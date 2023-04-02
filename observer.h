@@ -1,9 +1,10 @@
 #ifndef OBSERVER_H
 #define OBSERVER_H
-class Subject;
-class Observer{
+
+template <typename Statetype> class Subject;
+template <typename Statetype> class Observer{
 public:
-    virtual void notify(Subject& whoNotified) = 0;
+    virtual void notify(Subject<Statetype>& whoNotified) = 0;
 };
 
 #endif

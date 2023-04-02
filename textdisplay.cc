@@ -1,6 +1,6 @@
 #include "textdisplay.h"
-#include "celltype.h"
-void TextDisplay::notify(Subject& whoNotified){
+#include "state.h"
+void TextDisplay::notify(Subject<State>& whoNotified){
     CellType = whoNotified.getState(); // change function name
 
     switch(){

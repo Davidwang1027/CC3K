@@ -5,7 +5,8 @@
 template <typename Statetype> class Observer;
 
 template <typename Statetype> class Subject{
-    std::vector<Observer*> observers;
+    std::vector<Observer<Statetype>*> observers;
+    Statetype state;
 public:
     virtual void notifyObservers();
     virtual void attach(Observer<Statetype>* o);
@@ -27,12 +28,12 @@ void Subject<Statetype>::attach(Observer<Statetype>* o){
 
 template <typename Statetype>
 void Subject<Statetype>::setState(Statetype newstate){
-
+    state = newstate;
 }
 
 template <typename Statetype>
 Statetype Subject<Statetype>::getState(){
-
+    return state;
 }
 
 #endif
