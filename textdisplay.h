@@ -2,6 +2,7 @@
 #define TEXTDISPLAY_H
 #include "observer.h"
 #include <vector>
+#include <iostream>
 
 class TextDisplay : public Observer{
     std::vector<std::vector<char>> theDisplay;
