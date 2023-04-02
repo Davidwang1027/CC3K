@@ -2,7 +2,7 @@
 #define PLAYER_H
 #include "entity.h"
 
-class player : public entity{
+class Player : public Entity{
 public:
     void buff();
 };
