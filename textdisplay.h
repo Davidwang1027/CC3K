@@ -1,6 +1,7 @@
 #ifndef TEXTDISPLAY_H
 #define TEXTDISPLAY_H
 #include "observer.h"
+#include <iostream>
 #include <vector>
 #include <iostream>
 

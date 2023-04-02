@@ -4,7 +4,7 @@
 
 Cell::Cell(size_t r, size_t c, char type) : r{ r }, c{ c }, type{ type }{}
 
-void Cell::setCoords(int r, int c){
+void Cell::setCoords(size_t r, size_t c){
     this->r = r;
     this->c = c;
 }
@@ -13,11 +13,11 @@ void Cell::setType(char type){
     this->type = type;
 }
 
-int Cell::getRow(){
+size_t Cell::getRow(){
     return r;
 }
 
-int Cell::getCol(){
+size_t Cell::getCol(){
     return c;
 }
 
