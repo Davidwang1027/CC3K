@@ -1,23 +1,33 @@
 #ifndef SUBJECT_H
 #define SUBJECT_H
 #include <vector>
-#include "observer.h"
-class Subject{
-    std::vector<Observer*> observers;
 
+template <typename Statetype> class Observer;
+
+template <typename Statetype> class Subject{
+    std::vector<Observer*> observers;
 public:
     virtual void notifyObservers();
-    virtual void attach(Observer* o);
+    virtual void attach(Observer<Statetype>* o);
+    void setState();
+    Statetype getState();
 };
 
-void Subject::notifyObservers(){
+template <typename Statetype>
+void Subject<Statetype>::notifyObservers(){
     for (auto o : observers){
         o->notify(*this);
     }
 }
 
-void Subject::attach(Observer* o){
+template <typename Statetype>
+void Subject<Statetype>::attach(Observer<Statetype>* o){
     observers.push_back(o);
+}
+
+template <typename Statetype>
+void Subject<Statetype>::setState(){
+
 }
 
 #endif
