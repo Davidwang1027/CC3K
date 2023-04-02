@@ -2,7 +2,7 @@
 #include "subject.h"
 #include "observer.h"
 
-Cell::Cell(int r, int c, char type) : r{ r }, c{ c }, type{ type }{}
+Cell::Cell(size_t r, size_t c, char type) : r{ r }, c{ c }, type{ type }{}
 
 void Cell::setCoords(int r, int c){
     this->r = r;
