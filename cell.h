@@ -3,6 +3,10 @@
 #include "subject.h"
 #include "observer.h"
 
+enum class CellType{
+
+}
+
 class Cell : public Subject, public Observer{
     std::size_t r, c;
     char type;
