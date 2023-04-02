@@ -8,10 +8,10 @@ class Cell : public Subject, public Observer{
     char type;
 public:
     Cell(size_t r, size_t c, char type);
-    void setCoords(int r, int c);
+    void setCoords(size_t r, size_t c);
     void setType(char type);
-    int getRow();
-    int getCol();
+    size_t getRow();
+    size_t getCol();
     char getType();
     void notify(Subject& whoNotified) override;
 };
