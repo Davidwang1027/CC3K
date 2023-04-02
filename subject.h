@@ -1,21 +1,28 @@
 #ifndef SUBJECT_H
 #define SUBJECT_H
 #include <vector>
-#include "observer.h"
-class Subject{
+
+template <typename T> class Observer;
+
+template <typename T> class Subject{
     std::vector<Observer*> observers;
+    T type;
 public:
     virtual void notifyObservers();
-    virtual void attach(Observer* o);
+    virtual void attach(Observer<T>* o);
+    void setType();
+    T getType();
 };
 
-void Subject::notifyObservers(){
+template <typename T>
+void Subject<T>::notifyObservers(){
     for (auto o : observers){
         o->notify(*this);
     }
 }
 
-void Subject::attach(Observer* o){
+template <typename T>
+void Subject<T>::attach(Observer<T>* o){
     observers.push_back(o);
 }
 
