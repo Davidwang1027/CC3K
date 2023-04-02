@@ -9,7 +9,7 @@ template <typename Statetype> class Subject{
 public:
     virtual void notifyObservers();
     virtual void attach(Observer<Statetype>* o);
-    void setState();
+    void setState(Statetype);
     Statetype getState();
 };
 
@@ -26,7 +26,12 @@ void Subject<Statetype>::attach(Observer<Statetype>* o){
 }
 
 template <typename Statetype>
-void Subject<Statetype>::setState(){
+void Subject<Statetype>::setState(Statetype newstate){
+
+}
+
+template <typename Statetype>
+Statetype Subject<Statetype>::getState(){
 
 }
 
