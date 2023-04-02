@@ -1,7 +1,7 @@
 #include "textdisplay.h"
 
 void TextDisplay::notify(Subject& whoNotified){
-    // TODO
+
 }
 
 std::ostream& operator<<(std::ostream& out, const TextDisplay& td){
