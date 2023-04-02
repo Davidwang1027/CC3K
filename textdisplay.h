@@ -4,9 +4,10 @@
 #include <vector>
 
 class TextDisplay : public Observer{
-    void notify(Subject& whoNotified) override;
     std::vector<std::vector<char>> theDisplay;
-
+public:
+    void notify(Subject& whoNotified) override;
+    friend std::ostream& operator<<(std::ostream& out, const TextDisplay& td);
 };
 
 

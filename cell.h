@@ -4,10 +4,10 @@
 #include "observer.h"
 
 class Cell : public Subject, public Observer{
-    int r, c;
+    size_t r, c;
     char type;
 public:
-    Cell(int r, int c, char type);
+    Cell(size_t r, size_t c, char type);
     void setCoords(int r, int c);
     void setType(char type);
     int getRow();
