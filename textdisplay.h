@@ -3,6 +3,7 @@
 #include "observer.h"
 #include <iostream>
 #include <vector>
+#include <iostream>
 
 class TextDisplay : public Observer{
     std::vector<std::vector<char>> theDisplay;
