@@ -1,6 +1,7 @@
 #include "tempotion.h"
-class Player;
+#include "player.h"
 class BA : public Tempotion {
-    BA(Player *component): Tempotion{component} {};
-    
-}
+    public:
+        BA(Player *component): Tempotion{component} {}
+        int getAtk() override { return component->getAtk() + 5; }
+};
