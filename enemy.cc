@@ -34,3 +34,4 @@ void Enemy::attack(Entity& whodefend){
 void Enemy::move() {
     //Need random generation
 }
+
