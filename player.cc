@@ -17,8 +17,14 @@ void Player::attack(Entity& whodefend){
 }
 
 void Player::move(Direction dir) {
-    if () {
-
+    if (dir == Direction::east) {
+        this->setCoords(this->getRow(), this->getCol() + 1);
+    } else if (dir == Direction::north) {
+        this->setCoords(this->getRow() + 1, this->getCol());
+    } else if (dir == Direction::south) {
+        this->setCoords(this->getRow() - 1, this->getCol());
+    } else{
+        this->setCoords(this->getRow(), this->getCol() - 1);
     }
 }
 
