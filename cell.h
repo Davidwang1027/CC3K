@@ -19,7 +19,7 @@ public:
     std::size_t getCol();
     CellType getCellType();
     bool getStair();
-    void notify(Subject& whoNotified) override;
+    void notify(Subject<State>& whoNotified) override;
 };
 
 #endif
