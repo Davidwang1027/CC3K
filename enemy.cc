@@ -1,5 +1,10 @@
 #include "enemy.h"
 
+//libraries for random generation
+#include <vector>
+#include <algorithm>
+#include <random>
+#include <chrono>
 
 int ceiling(int num){
     if (num % 2 == 0){
