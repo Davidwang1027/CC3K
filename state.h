@@ -2,8 +2,9 @@
 #define STATE_H
 #include "celltype.h"
 struct State{
-    std::size_t r, c;
+    size_t r, c;
     CellType type;
+    bool isStairVisible;
 };
 
 #endif
