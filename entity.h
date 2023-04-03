@@ -1,15 +1,13 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "cell.h"
 
-class Entity : public Cell{
+class Entity{
 private:
     int hp, atk, def;
 public:
     Entity(int hp, int atk, int def) : hp{ hp }, atk{ atk }, def{ def }{};
     virtual void attack(Entity& whodefend) = 0;
-    virtual void move() = 0;
     virtual int getHp(){ return hp; };
     virtual int getAtk(){ return atk; };
     virtual int getDef(){ return def; };

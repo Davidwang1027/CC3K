@@ -1,4 +1,4 @@
 #include "cell.h"
-class Item : public Cell {
+class Item{
     //TO Be Done
 };

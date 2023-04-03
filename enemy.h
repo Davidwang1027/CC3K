@@ -7,8 +7,6 @@ class Enemy : public Entity{
 public:
     void attack(Entity& whodefend) override;
     virtual void dlcAttack(Entity& whodefend) = 0;
-    virtual void move() override;
-    virtual void notify(Entity& whoNotified);
 };
 
 #endif
