@@ -37,5 +37,5 @@ CellType Cell::getCellType(){
 }
 
 void Cell::notify(Subject& whoNotified){
-    // TODO
+    // TO BE DONE
 }
