@@ -1,5 +1,11 @@
 #include "enemy.h"
 
+// libraries for random generation
+#include <vector>
+#include <algorithm>
+#include <chrono>
+#include <random>
+
 
 int ceiling(int num){
     if (num % 2 == 0){
@@ -23,19 +29,4 @@ bool miss(){
 void Enemy::attack(Entity& whodefend){
     int damage = ceiling((100 / (100 + whodefend.getDef())) * this->getAtk());
     whodefend.setHp(this->getHp() - damage);
-}
-
-void Enemy::move(){
-    //Need random generation
-}
-
-void Enemy::notify(Subject<State>& whoNotified){
-    State s = whoNotified.getState();
-    size_t r = s.r;
-    size_t c = s.c;
-    CellType ct = s.type;
-    if (ct == CellType::player){
-
-    }
-
 }
