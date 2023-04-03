@@ -97,6 +97,8 @@
     "vector": "cpp",
     "algorithm": "cpp",
     "__verbose_abort": "cpp",
-    "bit": "cpp"
+    "bit": "cpp",
+    "numeric": "cpp",
+    "random": "cpp"
   }
 }
