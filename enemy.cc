@@ -24,8 +24,8 @@ bool miss() {
         return true;
     }
     return false;
-
 }
+
 void Enemy::attack(Entity& whodefend){
     int damage = ceiling((100 / (100 + whodefend.getDef())) * this->getAtk());
     whodefend.setHp(this->getHp() - damage);
