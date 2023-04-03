@@ -28,7 +28,7 @@ void Player::move(Direction dir) {
     }
 }
 
-void Player::setgold(int plusgold){
+void Player::setGold(float plusgold){
     gold = gold + plusgold;
 }
 
