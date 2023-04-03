@@ -2,7 +2,7 @@
 #define STATE_H
 #include "celltype.h"
 struct State{
-    size_t r, c;
+    std::size_t r, c;
     CellType type;
 };
 

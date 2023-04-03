@@ -3,8 +3,9 @@
 #include "subject.h"
 #include "observer.h"
 #include "celltype.h"
+#include "state.h"
 
-class Cell : public Subject, public Observer{
+class Cell : public Subject<State>, public Observer<State>{
     std::size_t r, c;
     CellType type;
 public:
@@ -14,7 +15,7 @@ public:
     void setType(CellType type);
     std::size_t getRow();
     std::size_t getCol();
-    CellType getType();
+    CellType getCellType();
     void notify(Subject& whoNotified) override;
 };
 
