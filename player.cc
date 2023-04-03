@@ -13,7 +13,7 @@ int ceiling(int num) {
 
 void Player::attack(Entity& whodefend){
     int damage = ceiling((100/(100 + whodefend.getDef())) * this->getAtk());
-    this->setHp(this->getHp() - damage);
+    whodefend.setHp(this->getHp() - damage);
 }
 
 void Player::move(Direction dir) {
