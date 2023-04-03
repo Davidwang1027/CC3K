@@ -28,3 +28,14 @@ void Enemy::attack(Entity& whodefend){
 void Enemy::move(){
     //Need random generation
 }
+
+void Enemy::notify(Subject<State>& whoNotified){
+    State s = whoNotified.getState();
+    size_t r = s.r;
+    size_t c = s.c;
+    CellType ct = s.type;
+    if (ct == CellType::player){
+
+    }
+
+}
