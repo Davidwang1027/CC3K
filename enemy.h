@@ -8,7 +8,7 @@ public:
     void attack(Entity& whodefend) override;
     virtual void dlcAttack(Entity& whodefend) = 0;
     virtual void move() override;
-    virtual void notify(Subject<State>& whoNotified);
+    virtual void notify(Entity& whoNotified);
 };
 
 #endif
