@@ -4,8 +4,10 @@
 #include <iostream>
 #include <vector>
 #include <iostream>
+#include "state.h"
 
-class TextDisplay : public Observer{
+
+class TextDisplay : public Observer <State>{
     std::vector<std::vector<char>> theDisplay;
 public:
     void notify(Subject<State>& whoNotified) override;

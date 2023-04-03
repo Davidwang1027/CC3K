@@ -4,6 +4,7 @@
 struct State{
     size_t r, c;
     CellType type;
+    bool isStairVisible;
 };
 
 #endif

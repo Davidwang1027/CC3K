@@ -1,12 +1,21 @@
 #include "textdisplay.h"
-#include "state.h"
+#include "subject.h"
+#include "celltype.h"
+
 void TextDisplay::notify(Subject<State>& whoNotified){
-    CellType = whoNotified.getState(); // change function name
-
-    switch(){
-
+    State s = whoNotified.getState();
+    CellType t = s.type;
+    size_t r = s.r;
+    size_t c = s.c;
+    bool isv = s.isStairVisible;
+    switch (t){
+    case CellType::vWall:
+        theDisplay[r][c] = '|';
+        break;
+    case CellType::hWall:
+        theDisplay[r][c] = '-';
+        break;
     }
-
 }
 
 std::ostream& operator<<(std::ostream& out, const TextDisplay& td){
