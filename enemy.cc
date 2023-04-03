@@ -6,11 +6,6 @@
 #include <random>
 #include <chrono>
 
-//libraries for random generation
-#include <vector>
-#include <algorithm>
-#include <random>
-#include <chrono>
 
 int ceiling(int num){
     if (num % 2 == 0){
@@ -22,6 +17,13 @@ int ceiling(int num){
 
 bool miss() {
     std::vector<int> v = {0,1};
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine rng{seed};
+    std::shuffle(v.begin(), v.end(), rng);
+    if (*(v.begin()) == 1) {
+        return true;
+    }
+    return false;
 
 }
 void Enemy::attack(Entity& whodefend){
