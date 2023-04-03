@@ -1,15 +1,33 @@
 #include "enemy.h"
 
-int ceiling(int num) {
-    if (num % 2 == 0) {
+//libraries for random generation
+#include <vector>
+#include <algorithm>
+#include <random>
+#include <chrono>
+
+
+int ceiling(int num){
+    if (num % 2 == 0){
         return num;
-    } else {
+    } else{
         return num + 1;
     }
 }
 
-void Enemy::attack(Entity& whodefend) {
-    int damage = ceiling((100/(100 + whodefend.getDef())) * this->getAtk());
+bool miss() {
+    std::vector<int> v = {0,1};
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine rng{seed};
+    std::shuffle(v.begin(), v.end(), rng);
+    if (*(v.begin()) == 1) {
+        return true;
+    }
+    return false;
+
+}
+void Enemy::attack(Entity& whodefend){
+    int damage = ceiling((100 / (100 + whodefend.getDef())) * this->getAtk());
     whodefend.setHp(this->getHp() - damage);
 }
 
