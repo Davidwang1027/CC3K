@@ -1,3 +1,6 @@
+#ifndef ENEMY
+#define ENEMY
+
 #include "entity.h"
 
 class Enemy : public Entity {
@@ -5,3 +8,5 @@ class Enemy : public Entity {
         virtual void attack(Entity& whodefend) override;
         virtual void move() override;
 };
+
+#endif
