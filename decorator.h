@@ -1,3 +1,6 @@
+#ifndef DECORATOR_H
+#define DECORATOR_H
+
 #include "player.h"
 
 class Decorator : public Player {
@@ -7,3 +10,5 @@ class Decorator : public Player {
         Decorator(Player *component) : component{component} {};
         virtual ~Decorator() { delete component; };
 };
+
+#endif
