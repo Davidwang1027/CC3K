@@ -106,5 +106,6 @@
     "random": "cpp",
     "utility": "cpp",
     "numbers": "cpp"
-  }
+  },
+  "C_Cpp.errorSquiggles": "enabled"
 }
