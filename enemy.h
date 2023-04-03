@@ -1,7 +1,7 @@
 #include "entity.h"
 
-class Enemies : public Entity {
+class Enemy : public Entity {
     public:
-        virtual void attack(Entity& whodef) override;
+        virtual void attack(Entity& whodefend) override;
         virtual void move() override;
 };
