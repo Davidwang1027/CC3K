@@ -3,7 +3,6 @@
 #include <vector>
 
 template <typename Statetype> class Observer;
-
 template <typename Statetype> class Subject{
     std::vector<Observer<Statetype>*> observers;
     Statetype state;
