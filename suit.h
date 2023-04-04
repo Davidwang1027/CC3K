@@ -4,5 +4,6 @@
 class Player;
 class Suit : public Item, public Decorator{
     public:
-        Suit(Player *component);
+        Suit(Player *component) : Decorator{component} {};
+        void use(Player& p) override;
 };
