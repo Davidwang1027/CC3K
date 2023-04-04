@@ -1,4 +1,6 @@
 #include "cell.h"
+#include "player.h"
 class Item{
-    //TO Be Done
+public:
+    virtual void use(Player& p) = 0;
 };
