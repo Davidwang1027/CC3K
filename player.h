@@ -9,7 +9,7 @@ private:
 protected:
     float gold;
 public:
-    Player(int maxhp = 0, int hp = 0, int atk = 0, int def = 0, float gold = 0, bool Suit = false) : Entity{ hp, atk, def }, maxhp{ maxhp }, gold{ gold }, Suit{ Suit }{}
+    Player(int maxhp = 0, int hp = 0, int atk = 0, int def = 0, float gold = 0, bool hasSuit = false) : Entity{ hp, atk, def }, maxhp{ maxhp }, gold{ gold }, hasSuit{ hasSuit }{}
     virtual void attack(Enemy& whodefend);
     virtual void addGold(float plusgold);
     float getGold();
