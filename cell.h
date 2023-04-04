@@ -16,6 +16,7 @@ class Cell : public Subject<State>, public Observer<State>{
 public:
     Cell(std::size_t r, std::size_t c, CellType type, Entity* entity, Item* item, bool stairVisible) :
         r{ r }, c{ c }, type{ type }, entity{ entity }, item{ item }, stairVisible{ stairVisible }{
+        this->setState({ r, c, type, entity, item, stairVisible });
     };
     void setCoords(std::size_t r, std::size_t c){
         this->r = r;
