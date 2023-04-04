@@ -4,8 +4,8 @@
 
 template <typename Statetype> class Observer;
 template <typename Statetype> class Subject{
-    std::vector<Observer<Statetype>*> observers;x
-        Statetype state;
+    std::vector<Observer<Statetype>*> observers;
+    Statetype state;
 public:
     virtual void notifyObservers();
     virtual void attach(Observer<Statetype>* o);
