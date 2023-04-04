@@ -9,7 +9,7 @@ class Gold : public Item{
     Dragon* dragon = nullptr;
 public:
     Gold(float value, bool isProtected, Dragon* dragon) : value{ value }, isProtected{ isProtected }, dragon{ dragon }{}
-    void use(Player* p) override;
+    void use(Player*& p) override;
     // no need for setDragon method because dragon is set in the constructor
     Dragon* getDragon(){
         return dragon;
