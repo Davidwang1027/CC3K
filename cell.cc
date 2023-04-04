@@ -2,5 +2,4 @@
 
 
 void Cell::notify(Subject& whoNotified){
-    // TO BE DONE
 }
