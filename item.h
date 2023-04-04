@@ -2,5 +2,5 @@
 #include "player.h"
 class Item{
 public:
-    virtual void use(Player& p) = 0;
+    virtual void use(Player* p) = 0;
 };
