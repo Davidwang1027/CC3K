@@ -26,11 +26,6 @@ public:
         return isProtected;
     }
 
-
-
-
-
-
 };
 
 #endif
