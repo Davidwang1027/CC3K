@@ -6,7 +6,6 @@ class Phoenix : public Enemy{
 public:
     Phoenix();
     void dlcAttack(Entity& whodefend) override;
-
 };
 
 #endif
