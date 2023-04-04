@@ -7,7 +7,7 @@ class WA : public Tempotion {
     public:
         WA(Player *component): Tempotion{component} {}
         int getAtk() override { return component->getAtk() - 5; }
-        void use(Player* p) override;
+        void use(Player*& p) override;
 };
 
 #endif

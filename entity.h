@@ -12,7 +12,7 @@ public:
     Entity(int hp, int atk, int def);
     std::vector<Position> getDestinations() const { return availableDestination; };
     void setDestination(std::vector<Position> newDest){ this->availableDestination = newDest; };
-    virtual void attack(Entity& whodefend) = 0;
+    //virtual void attack(Entity& whodefend) = 0;
     virtual int getHp(){ return hp; };
     virtual int getAtk(){ return atk; };
     virtual int getDef(){ return def; };

@@ -26,9 +26,12 @@ bool miss(){
     return false;
 }
 
-void Enemy::attack(Entity& whodefend){
+void Enemy::attack(Player& whodefend){
     if (!miss()) {
         int damage = ceiling((100 / (100 + whodefend.getDef())) * this->getAtk());
+        if (whodefend.hasSuit()) {
+            damage /= 2;
+        }
         whodefend.setHp(this->getHp() - damage);
     }
 }

@@ -9,7 +9,7 @@ int ceiling(int num){
     }
 }
 
-void Player::attack(Entity& whodefend){
+void Player::attack(Enemy& whodefend){
     int damage = ceiling((100 / (100 + whodefend.getDef())) * this->getAtk());
     whodefend.setHp(this->getHp() - damage);
 }
