@@ -26,12 +26,15 @@ bool miss(){
     return false;
 }
 
-void Enemy::attack(Player& whodefend){
+std::string Enemy::attack(Player& whodefend){
     if (!miss()){
         int damage = ceiling((100 / (100 + whodefend.getDef())) * this->getAtk());
         if (whodefend.getSuit()){
             damage /= 2;
         }
         whodefend.setHp(this->getHp() - damage);
+        return std::to_string(damage);
+    } else{
+        return "Missed";
     }
 }

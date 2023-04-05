@@ -3,12 +3,13 @@
 
 #include "entity.h"
 #include "player.h"
+#include <string>
 
 class Enemy : public Entity{
 public:
     Enemy(int hp, int atk, int def) : Entity(hp, atk, def){};
-    virtual void attack(Player& whodefend);
-    virtual void dlcAttack(Player& whodefend) = 0;
+    virtual std::string attack(Player& whodefend);
+    virtual std::string dlcAttack(Player& whodefend) = 0;
 };
 
 #endif
