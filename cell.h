@@ -8,19 +8,21 @@
 #include <vector>
 class Enemy;
 class Player;
-class Item;
+class Gold;
+class Suit;
 class Cell : public Subject<State>, public Observer<State>{
     Position pos;
     CellType type;
     Player* player = nullptr;
     Enemy* enemy = nullptr;
-    Item* item = nullptr;
+    Gold* gold = nullptr;
+    Suit* suit = nullptr;
     bool stairVisible = false;
     std::vector<std::string> display;
 public:
-    Cell(Position pos, CellType type, Player* player, Enemy* enemy, Item* item, bool stairVisible, std::vector<std::string> display) :
-        pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, item{ item }, stairVisible{ stairVisible }, display{ display }{
-        this->setState({ pos, type, player, enemy, item, stairVisible, display });
+    Cell(Position pos, CellType type, Player* player, Enemy* enemy, Gold* gold, Suit* suit, bool stairVisible, std::vector<std::string> display) :
+        pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, gold{ gold }, suit{ suit }, stairVisible{ stairVisible }, display{ display }{
+        this->setState({ pos, type, player, enemy, gold, suit, stairVisible, display });
     }
     void setPos(Position pos){
         this->pos = pos;
@@ -31,8 +33,11 @@ public:
     void setEnemy(Enemy* enemy){
         this->enemy = enemy;
     }
-    void setItem(Item* item){
-        this->item = item;
+    void setGold(Gold* gold){
+        this->gold = gold;
+    }
+    void setSuit(Suit* suit){
+        this->suit = suit;
     }
     void setType(CellType type){
         this->type = type;
@@ -55,8 +60,11 @@ public:
     Enemy* getEnemy(){
         return enemy;
     }
-    Item* getItem(){
-        return item;
+    Gold* getGold(){
+        return gold;
+    }
+    Suit* getSuit(){
+        return suit;
     }
     bool getStair(){
         return stairVisible;
