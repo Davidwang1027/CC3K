@@ -44,14 +44,27 @@ void Cell::notify(Subject& whoNotified){
     }
     // thisType is Player
     else if (thisType == CellType::player){
-        if ((whoType == CellType::vampire) ||
-            (whoType == CellType::goblin) ||
-            (whoType == CellType::phoenix) ||
-            (whoType == CellType::troll) ||
-            (whoType == CellType::werewolf) ||
-            (whoType == CellType::merchant) ||
-            (whoType == CellType::dragon)){   // Player attacks enemy
+        if (whoType == CellType::gold){   // Player sees gold
+            std::string s = "gold";
+            thisState.display.push_back(s);
+            this->setState(thisState);
+            this->notifyObservers();
+            if (whoState.item) {
 
+            }
+            return;
+        } else if (whoType == CellType::potion) {
+            std::string s = "potion";
+            thisState.display.push_back(s);
+            this->setState(thisState);
+            this->notifyObservers();
+            updateDestinations(*(this->enemy), whoState.pos);
+            return;
+        } else if (whoType != CellType::tile) {
+            updateDestinations(*(this->enemy), whoState.pos);
+            return;
         }
+    } else if (thisType == CellType::gold){
+        if ()
     }
 }
