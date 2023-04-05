@@ -6,13 +6,16 @@
 #include <vector>
 class Enemy;
 class Player;
-class Item;
+class Gold;
+class Suit;
+
 struct State{
     Position pos;
     CellType type;
     Player* player;
     Enemy* enemy;
-    Item* item;
+    Gold* gold;
+    Suit* suit;
     bool stairVisible;
     std::vector<std::string> display;
 };

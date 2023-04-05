@@ -49,8 +49,9 @@ void Cell::notify(Subject& whoNotified){
             thisState.display.push_back(s);
             this->setState(thisState);
             this->notifyObservers();
-            if (whoState.item){
+            if (whoState.){
 
             }
         }
     }
+}

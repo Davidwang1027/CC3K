@@ -8,12 +8,12 @@
 class Player;
 class Suit : public Item{
     bool isProtected = false;
-    Dragon* dargon = nullptr;
+    Dragon* dragon = nullptr;
 public:
-    void setIsProtected(bool isProtected) {
+    void setIsProtected(bool isProtected){
         this->isProtected = isProtected;
     }
-    void use(Player*& p) { p->setSuit(true); };
+    void use(Player*& p){ p->setSuit(true); };
 };
 
 #endif
