@@ -1,5 +1,5 @@
 #include "enemy.h"
-
+#include "player.h"
 // libraries for random generation
 #include <vector>
 #include <algorithm>
@@ -33,8 +33,13 @@ std::string Enemy::attack(Player& whodefend){
             damage /= 2;
         }
         whodefend.setHp(this->getHp() - damage);
-        return std::to_string(damage);
+        std::string result = this->getName() + " deals " + std::to_string(damage) + " damage to " + whodefend.getName() + ".";
+        if (whodefend.getHp() <= 0){
+            whodefend.setDead();
+            return result + " " + whodefend.getName() + " is dead.";
+        }
+        return result;
     } else{
-        return "Missed";
+        return this->getName() + " missed! Lucky you!";
     }
 }

@@ -1,8 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "entity.h"
-#include "enemy.h"
+
 #include <string>
+class Enemy;
 class Player : public Entity{
 private:
     int maxhp;
@@ -10,7 +11,7 @@ private:
 protected:
     float gold;
 public:
-    Player(int maxhp = 0, int hp = 0, int atk = 0, int def = 0, float gold = 0, bool hasSuit = false) : Entity{ hp, atk, def }, maxhp{ maxhp }, gold{ gold }, hasSuit{ hasSuit }{}
+    Player(std::string name, int maxhp = 0, int hp = 0, int atk = 0, int def = 0, float gold = 0, bool hasSuit = false) : Entity{ name, hp, atk, def }, maxhp{ maxhp }, gold{ gold }, hasSuit{ hasSuit }{}
     virtual std::string attack(Enemy& whodefend);
     virtual std::string addGold(float plusgold);
     float getGold();

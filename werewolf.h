@@ -3,7 +3,8 @@
 #include "enemy.h"
 class Werewolf : public Enemy{
 public:
-    Werewolf() : Enemy(120, 30, 5){};
+    Werewolf() : Enemy("Werewolf", 120, 30, 5){};
+    std::string dlcAttack(Player& whodefend) override;
 };
 
 #endif
