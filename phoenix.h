@@ -4,8 +4,8 @@
 #include "enemy.h"
 class Phoenix : public Enemy{
 public:
-    Phoenix() : Enemy(50, 35, 20){};
-    void dlcAttack(Entity& whodefend) override;
+    Phoenix() : Enemy("Phoenix", 50, 35, 20){};
+    std::string dlcAttack(Player& whodefend) override;
 };
 
 #endif

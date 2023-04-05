@@ -4,8 +4,8 @@
 class Dragon : public Enemy{
     bool hostile = false;
 public:
-    Dragon() : Enemy(150, 20, 20){};
-    void dlcAttack(Entity& whodefend) override;
+    Dragon() : Enemy("Dragon", 150, 20, 20){};
+    std::string dlcAttack(Player& whodefend) override;
 };
 
 

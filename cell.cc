@@ -31,16 +31,27 @@ void Cell::notify(Subject& whoNotified){
         (thisType == CellType::dragon)){
         if (whoType == CellType::player){     // Enemy attacks player
             std::string s = (this->enemy)->attack(*(whoState.player));
-            if (s == "Missed"){
-                thisState.display.emplace_back("Missed");
-                this->setState(thisState);
-            }
+            thisState.display.push_back(s);
+            this->setState(thisState);
+            this->notifyObservers();
+            return;
         } else if (whoType != CellType::tile){
             updateDestinations(*(this->enemy), whoState.pos);
+            return;
         } else{
             return;
         }
-    } else if (thisType == CellType::player){
+    }
+    // thisType is Player
+    else if (thisType == CellType::player){
+        if ((whoType == CellType::vampire) ||
+            (whoType == CellType::goblin) ||
+            (whoType == CellType::phoenix) ||
+            (whoType == CellType::troll) ||
+            (whoType == CellType::werewolf) ||
+            (whoType == CellType::merchant) ||
+            (whoType == CellType::dragon)){   // Player attacks enemy
 
+        }
     }
 }
