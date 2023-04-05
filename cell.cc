@@ -30,18 +30,16 @@ void Cell::notify(Subject& whoNotified){
         (thisType == CellType::merchant) ||
         (thisType == CellType::dragon)){
         if (whoType == CellType::player){     // Enemy attacks player
-            (this->enemy)->attack(*(whoState.player));
+            std::string s = (this->enemy)->attack(*(whoState.player));
+            if (s == "Missed"){
+                thisState.display.emplace_back("Missed");
+                this->setState(thisState);
+            }
         } else if (whoType != CellType::tile){
             updateDestinations(*(this->enemy), whoState.pos);
         } else{
             return;
         }
-
-
-
-
-
-
     } else if (thisType == CellType::player){
 
     }

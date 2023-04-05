@@ -9,14 +9,16 @@ int ceiling(int num){
     }
 }
 
-void Player::attack(Enemy& whodefend){
+std::string Player::attack(Enemy& whodefend){
     int damage = ceiling((100 / (100 + whodefend.getDef())) * this->getAtk());
     whodefend.setHp(this->getHp() - damage);
+    return std::to_string(damage);
 }
 
 
-void Player::addGold(float plusgold){
+std::string Player::addGold(float plusgold){
     gold = gold + plusgold;
+    return std::to_string(gold);
 }
 
 float Player::getGold(){

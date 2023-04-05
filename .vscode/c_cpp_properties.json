@@ -5,11 +5,7 @@
       "includePath": [
         "${workspaceFolder}/**"
       ],
-<<<<<<< HEAD
-      "compilerPath": "clang",
-=======
       "compilerPath": "/usr/bin/clang",
->>>>>>> 01520d1 (	modified:   cell.cc)
       "cStandard": "${default}",
       "cppStandard": "${default}",
       "intelliSenseMode": "macos-clang-arm64",
