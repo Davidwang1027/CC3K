@@ -87,7 +87,18 @@ void Cell::notify(Subject& whoNotified){
             return;
         }
     }
-
     // thisType is gold
-    else if (thisType == )
+    else if (thisType == CellType::gold){
+        if (whoState.type == CellType::player){
+            thisState.gold->getDragon()->setHostile(true);
+       }
+       return;
+    } else if (thisType == CellType::suit){
+        if (whoState.type == CellType::player){
+            thisState.suit->getDragon()->setHostile(true);
+        }
+        return;
+    } else {
+        return;
+    }
 }
