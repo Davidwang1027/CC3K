@@ -77,11 +77,11 @@ void Cell::notify(Subject& whoNotified){
             std::string s = "potion";
             thisState.display.push_back(s);
             this->setState(thisState);
-            updateDestinations(*(this->enemy), whoState.pos);
+            updateDestinations(*(this->player), whoState.pos);
             this->notifyObservers();
             return;
         } else if (whoType != CellType::tile){
-            updateDestinations(*(this->enemy), whoState.pos);
+            updateDestinations(*(this->player), whoState.pos);
             return;
         } else{
             return;
