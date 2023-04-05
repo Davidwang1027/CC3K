@@ -49,22 +49,8 @@ void Cell::notify(Subject& whoNotified){
             thisState.display.push_back(s);
             this->setState(thisState);
             this->notifyObservers();
-            if (whoState.item) {
+            if (whoState.item){
 
             }
-            return;
-        } else if (whoType == CellType::potion) {
-            std::string s = "potion";
-            thisState.display.push_back(s);
-            this->setState(thisState);
-            this->notifyObservers();
-            updateDestinations(*(this->enemy), whoState.pos);
-            return;
-        } else if (whoType != CellType::tile) {
-            updateDestinations(*(this->enemy), whoState.pos);
-            return;
         }
-    } else if (thisType == CellType::gold){
-        if ()
     }
-}
