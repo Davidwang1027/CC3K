@@ -9,7 +9,7 @@ private:
     int hp, atk, def;
     std::vector<Position> availableDestination;
 public:
-    Entity(int hp, int atk, int def);
+    Entity(int hp, int atk, int def) : hp{ hp }, atk{ atk }, def{ def }{};
     std::vector<Position> getDestinations() const{ return availableDestination; };
     void setDestination(std::vector<Position> newDest){ this->availableDestination = newDest; };
     virtual int getHp(){ return hp; };

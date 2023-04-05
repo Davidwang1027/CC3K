@@ -4,7 +4,7 @@ enum class CellType{
     vWall, hWall, passage, door, tile, stair, empty,  // map objects
     potion, gold, compass, suit, // item
     player, // players
-    vampire, troll, goblin, dragon, merchant, phoenix // enemies
+    vampire, troll, goblin, dragon, werewolf, merchant, phoenix // enemies
 };
 
 

@@ -1,12 +1,15 @@
 #ifndef STATE_H
 #define STATE_H
 #include "celltype.h"
-class Entity;
+#include "position.h"
+class Enemy;
+class Player;
 class Item;
 struct State{
-    size_t r, c;
+    Position pos;
     CellType type;
-    Entity* entity;
+    Player* player;
+    Enemy* enemy;
     Item* item;
     bool stairVisible;
 };
