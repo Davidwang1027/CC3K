@@ -5,25 +5,29 @@
 #include "celltype.h"
 #include "state.h"
 
-class Entity;
+class Enemy;
+class Player;
 class Item;
 class Cell : public Subject<State>, public Observer<State>{
-    std::size_t r, c;
+    Position pos;
     CellType type;
-    Entity* entity = nullptr;
+    Player* player = nullptr;
+    Enemy* enemy = nullptr;
     Item* item = nullptr;
     bool stairVisible = false;
 public:
-    Cell(std::size_t r, std::size_t c, CellType type, Entity* entity, Item* item, bool stairVisible) :
-        r{ r }, c{ c }, type{ type }, entity{ entity }, item{ item }, stairVisible{ stairVisible }{
-        this->setState({ r, c, type, entity, item, stairVisible });
-    };
-    void setCoords(std::size_t r, std::size_t c){
-        this->r = r;
-        this->c = c;
+    Cell(Position pos, CellType type, Player* player, Enemy* enemy, Item* item, bool stairVisible) :
+        pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, item{ item }, stairVisible{ stairVisible }{
+        this->setState({ pos, type, player, enemy, item, stairVisible });
     }
-    void setEntity(Entity* entity){
-        this->entity = entity;
+    void setPos(Position pos){
+        this->pos = pos;
+    }
+    void setPlayer(Player* player){
+        this->player = player;
+    }
+    void setEnemy(Enemy* enemy){
+        this->enemy = enemy;
     }
     void setItem(Item* item){
         this->item = item;
@@ -34,17 +38,17 @@ public:
     void setStair(bool stairVisible){
         this->stairVisible = stairVisible;
     }
-    std::size_t getRow(){
-        return r;
-    }
-    std::size_t getCol(){
-        return c;
+    Position getPos(){
+        return pos;
     }
     CellType getCellType(){
         return type;
     }
-    Entity* getEntity(){
-        return entity;
+    Player* getPlayer(){
+        return player;
+    }
+    Enemy* getEnemy(){
+        return enemy;
     }
     Item* getItem(){
         return item;
