@@ -3,7 +3,8 @@
 
 #include "enemy.h"
 class Vampire : public Enemy{
-    void dlcAttack(Player& whodefend) override;
+public:
+    Vampire() : Enemy("Vampire", 50, 25, 25){};
 };
 
 #endif
