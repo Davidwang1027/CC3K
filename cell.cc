@@ -52,6 +52,17 @@ void Cell::notify(Subject& whoNotified){
             if (whoState.){
 
             }
+            return;
+        } else if (whoType == CellType::potion) {
+            std::string s = "potion";
+            thisState.display.push_back(s);
+            this->setState(thisState);
+            updateDestinations(*(this->enemy), whoState.pos);
+            this->notifyObservers();
+            return;
+        } else if (whoType != CellType::tile) {
+            updateDestinations(*(this->enemy), whoState.pos);
+            return;
         }
     }
 }
