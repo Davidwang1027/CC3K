@@ -37,11 +37,6 @@ void Cell::notify(Subject& whoNotified){
             return;
         }
 
-
-
-
-
-
     } else if (thisType == CellType::player){
 
     }
