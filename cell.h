@@ -4,7 +4,8 @@
 #include "observer.h"
 #include "celltype.h"
 #include "state.h"
-
+#include <string>
+#include <vector>
 class Enemy;
 class Player;
 class Item;
@@ -15,10 +16,11 @@ class Cell : public Subject<State>, public Observer<State>{
     Enemy* enemy = nullptr;
     Item* item = nullptr;
     bool stairVisible = false;
+    std::vector<std::string> display;
 public:
-    Cell(Position pos, CellType type, Player* player, Enemy* enemy, Item* item, bool stairVisible) :
-        pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, item{ item }, stairVisible{ stairVisible }{
-        this->setState({ pos, type, player, enemy, item, stairVisible });
+    Cell(Position pos, CellType type, Player* player, Enemy* enemy, Item* item, bool stairVisible, std::vector<std::string> display) :
+        pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, item{ item }, stairVisible{ stairVisible }, display{ display }{
+        this->setState({ pos, type, player, enemy, item, stairVisible, display });
     }
     void setPos(Position pos){
         this->pos = pos;
@@ -38,6 +40,9 @@ public:
     void setStair(bool stairVisible){
         this->stairVisible = stairVisible;
     }
+    void setDisplay(std::vector<std::string> display){
+        this->display = display;
+    }
     Position getPos(){
         return pos;
     }
@@ -55,6 +60,9 @@ public:
     }
     bool getStair(){
         return stairVisible;
+    }
+    std::vector<std::string> getDisplay(){
+        return display;
     }
     void notify(Subject& whoNotified) override;
 };
