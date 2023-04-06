@@ -4,6 +4,14 @@
 #include <chrono>
 #include <random>
 #include <algorithm>
+#include "vampire.h"
+#include "goblin.h"
+#include "troll.h"
+#include "werewolf.h"
+#include "phoenix.h"
+#include "merchant.h"
+#include "dragon.h"
+#include "player.h"
 
 int suitrandomGeneration(){
     std::vector<int> v = { 0, 1, 2, 3, 4 };
@@ -27,6 +35,13 @@ int chamberrandomGeneration(){
     std::default_random_engine rng{seed};
     std::shuffle(v.begin(), v.end(), rng);
     return *(v.begin());
+}
+
+Position randomPosition(std::vector<Position> chamber){
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine rng{seed};
+    std::shuffle(chamber.begin(), chamber.end(), rng);
+    return *(chamber.begin());
 }
 
 std::vector<std::vector<Position>> Floor::chamberConstruction(){
@@ -150,5 +165,14 @@ void Floor::init(Player* player, int level){
     td = new TextDisplay(25, 79);
     mapGenerator("map.txt", theFloor, td);
     std::vector<std::vector<Position>> chambers = chamberConstruction();
-
+    for (int i = 0; i < 20; i++){
+        int chamberNum = chamberrandomGeneration();
+        CellType enemy = enemyrandomGeneration();
+        Position enemyPos = randomPosition(chambers.at(chamberNum));
+        Enemy* e;
+        if (enemy == CellType::vampire){
+            theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::vampire);
+            e = new Vampire();
+        }
+    }
 }
