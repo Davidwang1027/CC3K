@@ -173,6 +173,21 @@ void Floor::init(Player* player, int level){
         if (enemy == CellType::vampire){
             theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::vampire);
             e = new Vampire();
+        } else if (enemy == CellType::werewolf){
+            theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::werewolf);
+            e = new Werewolf();
+        } else if (enemy == CellType::goblin){
+            theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::goblin);
+            e = new Goblin();
+        } else if (enemy == CellType::troll){
+            theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::troll);
+            e = new Troll();
+        } else if (enemy == CellType::phoenix){
+            theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::phoenix);
+            e = new Phoenix();
+        } else if (enemy == CellType::merchant){
+            theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::merchant);
+            e = new Merchant();
         }
     }
 }
