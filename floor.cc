@@ -164,6 +164,7 @@ void Floor::init(Player* player, int level){
     delete td;
     td = new TextDisplay(25, 79);
     mapGenerator("map.txt", theFloor, td);
+
     std::vector<std::vector<Position>> chambers = chamberConstruction();
     for (int i = 0; i < 20; i++){
         int chamberNum = chamberrandomGeneration();
@@ -189,5 +190,6 @@ void Floor::init(Player* player, int level){
             theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::merchant);
             e = new Merchant();
         }
+        enemies.emplace_back(e);
     }
 }
