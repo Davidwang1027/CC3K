@@ -4,9 +4,17 @@
 #include <chrono>
 #include <random>
 #include <algorithm>
+#include "vampire.h"
+#include "goblin.h"
+#include "troll.h"
+#include "werewolf.h"
+#include "phoenix.h"
+#include "merchant.h"
+#include "dragon.h"
+#include "player.h"
 
 int suitrandomGeneration(){
-    std::vector<int> v = {0, 1, 2, 3, 4};
+    std::vector<int> v = { 0, 1, 2, 3, 4 };
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine rng{seed};
     std::shuffle(v.begin(), v.end(), rng);
@@ -14,7 +22,7 @@ int suitrandomGeneration(){
 }
 
 int itemnumberrandomGeneration(){
-    std::vector<int> v = {0, 1, 2};
+    std::vector<int> v = { 0, 1, 2 };
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine rng{seed};
     std::shuffle(v.begin(), v.end(), rng);
@@ -22,18 +30,81 @@ int itemnumberrandomGeneration(){
 }
 
 int chamberrandomGeneration(){
-    std::vector<int> v = {0, 1, 2, 3, 4};
+    std::vector<int> v = { 0, 1, 2, 3, 4 };
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine rng{seed};
     std::shuffle(v.begin(), v.end(), rng);
     return *(v.begin());
 }
 
+Position randomPosition(std::vector<Position> chamber){
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine rng{seed};
+    std::shuffle(chamber.begin(), chamber.end(), rng);
+    return *(chamber.begin());
+}
+
+std::vector<std::vector<Position>> Floor::chamberConstruction(){
+    std::vector<Position> chamber1;
+    std::vector<Position> chamber2;
+    std::vector<Position> chamber3;
+    std::vector<Position> chamber4;
+    std::vector<Position> chamber5;
+    // chamber 1
+    for (size_t i = 2; i < 29; i++){
+        for (size_t j = 3; j < 7; j++){
+            if (theFloor.at(i).at(j).getCellType() == CellType::tile){
+                chamber1.emplace_back(Position{ i, j });
+            }
+        }
+    }
+    // chamber 2
+    for (size_t i = 39; i < 79; i++){
+        for (size_t j = 3; j < 8; j++){
+            if (theFloor.at(i).at(j).getCellType() == CellType::tile){
+                chamber2.emplace_back(Position{ i, j });
+            }
+        }
+        for (size_t i = 58; i < 79; i++){
+            for (size_t j = 8; j < 14; j++){
+                if (theFloor.at(i).at(j).getCellType() == CellType::tile){
+                    chamber2.emplace_back(Position{ i, j });
+                }
+            }
+        }
+    }
+
+    // chamber 3
+    for (size_t i = 38; i < 52; i++){
+        for (size_t j = 10; j < 13; j++){
+            if (theFloor.at(i).at(j).getCellType() == CellType::tile){
+                chamber3.emplace_back(Position{ i, j });
+            }
+        }
+    }
+    // chamber 4
+    for (size_t i = 3; i < 27; i++){
+        for (size_t j = 15; j < 24; j++){
+            if (theFloor.at(i).at(j).getCellType() == CellType::tile){
+                chamber4.emplace_back(Position{ i, j });
+            }
+        }
+    }
+    // chamber 5
+    for (size_t i = 37; i < 79; i++){
+        for (size_t j = 16; j < 24; j++){
+            if (theFloor.at(i).at(j).getCellType() == CellType::tile){
+                chamber5.emplace_back(Position{ i, j });
+            }
+        }
+    }
+    return { chamber1, chamber2, chamber3, chamber4, chamber5 };
+}
 CellType enemyrandomGeneration(){
-    std::vector<CellType> v = {CellType::vampire, CellType::vampire, CellType::vampire, CellType::werewolf,
+    std::vector<CellType> v = { CellType::vampire, CellType::vampire, CellType::vampire, CellType::werewolf,
     CellType::werewolf, CellType::werewolf, CellType::werewolf, CellType::goblin, CellType::goblin, CellType::goblin,
     CellType::goblin, CellType::goblin, CellType::troll, CellType::troll, CellType::phoenix, CellType::phoenix,
-    CellType::merchant, CellType::merchant};
+    CellType::merchant, CellType::merchant };
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine rng{seed};
     std::shuffle(v.begin(), v.end(), rng);
@@ -41,7 +112,7 @@ CellType enemyrandomGeneration(){
 }
 
 CellType itemrandomGeneration(){
-    std::vector<CellType> v = {CellType::potion, CellType::gold, CellType::gold, CellType::gold, CellType::gold};
+    std::vector<CellType> v = { CellType::potion, CellType::gold, CellType::gold, CellType::gold, CellType::gold };
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine rng{seed};
     std::shuffle(v.begin(), v.end(), rng);
@@ -93,5 +164,15 @@ void Floor::init(Player* player, int level){
     delete td;
     td = new TextDisplay(25, 79);
     mapGenerator("map.txt", theFloor, td);
-
+    std::vector<std::vector<Position>> chambers = chamberConstruction();
+    for (int i = 0; i < 20; i++){
+        int chamberNum = chamberrandomGeneration();
+        CellType enemy = enemyrandomGeneration();
+        Position enemyPos = randomPosition(chambers.at(chamberNum));
+        Enemy* e;
+        if (enemy == CellType::vampire){
+            theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::vampire);
+            e = new Vampire();
+        }
+    }
 }
