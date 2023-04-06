@@ -24,6 +24,7 @@ public:
         pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, gold{ gold }, suit{ suit }, stairVisible{ stairVisible }, display{ display }{
         this->setState({ pos, type, player, enemy, gold, suit, stairVisible, display });
     }
+    Cell();
     void setPos(Position pos){
         this->pos = pos;
     }

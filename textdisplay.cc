@@ -2,12 +2,22 @@
 #include "subject.h"
 #include "celltype.h"
 
+TextDisplay::TextDisplay(size_t row, size_t col) : row{ row }, col{ col }{
+    for (size_t i = 0; i < row; ++i){
+        std::vector<char> tmp;
+        for (size_t j = 0; j < col; ++j){
+            tmp.emplace_back(' ');
+        }
+        theDisplay.emplace_back(tmp);
+    }
+}
+
 void TextDisplay::notify(Subject<State>& whoNotified){
     State s = whoNotified.getState();
     CellType ct = s.type;
-    size_t r = s.r;
-    size_t c = s.c;
-    bool isv = s.isStairVisible;
+    size_t r = s.pos.x;
+    size_t c = s.pos.y;
+    bool sv = s.stairVisible;
     switch (ct){
     case CellType::vWall:
         theDisplay[r][c] = '|';
@@ -25,7 +35,7 @@ void TextDisplay::notify(Subject<State>& whoNotified){
         theDisplay[r][c] = '.';
         break;
     case CellType::stair:
-        if (isv){
+        if (sv){
             theDisplay[r][c] = '\\';
         } else{
             theDisplay[r][c] = '.';

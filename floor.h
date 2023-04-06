@@ -19,10 +19,12 @@ class Floor{
     Player* player;
     int level;
 public:
+
     void move();
     bool isWon();
     bool isLost();
-    void init();
+    void init(Player* player, int level);
+    friend std::ostream& operator<<(std::ostream& out, const Floor& f);
 };
 
 #endif
