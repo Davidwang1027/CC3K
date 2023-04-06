@@ -19,7 +19,7 @@ class Floor{
     Player* player;
     int level;
 public:
-
+    std::vector<std::vector<Position>> chamberConstruction();
     void move();
     bool isWon();
     bool isLost();
