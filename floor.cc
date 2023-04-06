@@ -1,6 +1,52 @@
 #include "floor.h"
 #include <iostream>
 #include <fstream>
+#include <chrono>
+#include <random>
+#include <algorithm>
+
+int suitrandomGeneration(){
+    std::vector<int> v = {0, 1, 2, 3, 4};
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine rng{seed};
+    std::shuffle(v.begin(), v.end(), rng);
+    return *(v.begin());
+}
+
+int itemnumberrandomGeneration(){
+    std::vector<int> v = {0, 1, 2};
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine rng{seed};
+    std::shuffle(v.begin(), v.end(), rng);
+    return *(v.begin());
+}
+
+int chamberrandomGeneration(){
+    std::vector<int> v = {0, 1, 2, 3, 4};
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine rng{seed};
+    std::shuffle(v.begin(), v.end(), rng);
+    return *(v.begin());
+}
+
+CellType enemyrandomGeneration(){
+    std::vector<CellType> v = {CellType::vampire, CellType::vampire, CellType::vampire, CellType::werewolf,
+    CellType::werewolf, CellType::werewolf, CellType::werewolf, CellType::goblin, CellType::goblin, CellType::goblin,
+    CellType::goblin, CellType::goblin, CellType::troll, CellType::troll, CellType::phoenix, CellType::phoenix,
+    CellType::merchant, CellType::merchant};
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine rng{seed};
+    std::shuffle(v.begin(), v.end(), rng);
+    return *(v.begin());
+}
+
+CellType itemrandomGeneration(){
+    std::vector<CellType> v = {CellType::potion, CellType::gold, CellType::gold, CellType::gold, CellType::gold};
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine rng{seed};
+    std::shuffle(v.begin(), v.end(), rng);
+    return *(v.begin());
+}
 
 std::ostream& operator<<(std::ostream& out, const Floor& f){
     out << *(f.td);
