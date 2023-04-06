@@ -5,6 +5,10 @@
 #include "gold.h"
 #include "suit.h"
 
+Cell::Cell(){
+    this->setState({ {0, 0}, CellType::empty, nullptr, nullptr, nullptr, nullptr, false, {} });
+}
+
 void updateDestinations(Entity& e, Position pos){
     std::vector<Position> dest = e.getDestinations();
     for (size_t i = 0; i < dest.size(); i++){
@@ -91,14 +95,14 @@ void Cell::notify(Subject& whoNotified){
     else if (thisType == CellType::gold){
         if (whoState.type == CellType::player){
             thisState.gold->getDragon()->setHostile(true);
-       }
-       return;
+        }
+        return;
     } else if (thisType == CellType::suit){
         if (whoState.type == CellType::player){
             thisState.suit->getDragon()->setHostile(true);
         }
         return;
-    } else {
+    } else{
         return;
     }
 }
