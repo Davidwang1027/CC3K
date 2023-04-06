@@ -4,7 +4,7 @@
 class Troll : public Enemy{
 public:
     Troll() : Enemy("Troll", 120, 25, 15){};
-    std::string dlcAttack(Player& whodefend) override;
+    //std::string dlcAttack(Player& whodefend) override;
 };
 
 #endif
