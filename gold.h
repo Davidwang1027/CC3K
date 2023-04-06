@@ -2,7 +2,7 @@
 #define GOLD_H
 #include "item.h"
 #include "player.h"
-#include "Dragon.h"
+#include "dragon.h"
 class Gold : public Item{
     float value;
     Dragon* dragon = nullptr;
