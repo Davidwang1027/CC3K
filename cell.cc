@@ -36,7 +36,7 @@ void Cell::notify(Subject& whoNotified){
             this->setState(thisState);
             this->notifyObservers();
             return;
-        } else if (whoType != CellType::tile){
+        } else if (whoType != CellType::tile || (whoType == CellType::stair && stairVisible)){
             updateDestinations(*(this->enemy), whoState.pos);
             return;
         } else{
@@ -80,7 +80,7 @@ void Cell::notify(Subject& whoNotified){
             updateDestinations(*(this->player), whoState.pos);
             this->notifyObservers();
             return;
-        } else if (whoType != CellType::tile){
+        } else if (whoType != CellType::tile && whoType != CellType::stair && whoType != CellType::passage){
             updateDestinations(*(this->player), whoState.pos);
             return;
         } else{
