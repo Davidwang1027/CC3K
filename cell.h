@@ -90,7 +90,6 @@ public:
     std::string getAction(){
         return action;
     }
-    void notify(Subject& whoNotified) override;
 };
 
 #endif
