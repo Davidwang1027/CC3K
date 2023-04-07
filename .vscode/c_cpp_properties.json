@@ -1,14 +1,11 @@
 {
-  "env": {
-    "defaultCompilerPath" : "E:/Microsoft VS Code/compiler/g++.exe"
-  },
   "configurations": [
     {
       "name": "windows-clang-x64",
       "includePath": [
         "${workspaceFolder}/**"
       ],
-      "compilerPath": "${defaultCompilerPath}",
+      "compilerPath": "E:\\msys64\\mingw64\\bin\\g++.exe",
       "cStandard": "${default}",
       "cppStandard": "${default}",
       "intelliSenseMode": "windows-clang-x64",
