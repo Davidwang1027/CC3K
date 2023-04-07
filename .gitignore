@@ -30,8 +30,5 @@
 *.exe
 *.out
 *.app
-.vscode/c_cpp_properties.json
-.vscode/launch.json
-.vscode/settings.json
+*.json
 .gitignore
-.vscode/c_cpp_properties.json
