@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "C/C++ Runner: Debug Session",
-      "type": "cppvsdbg",
+      "type": "lldb",
       "request": "launch",
       "args": [],
       "stopAtEntry": false,
