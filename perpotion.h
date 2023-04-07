@@ -5,6 +5,6 @@
 class Perpotion : public Item {
     int value;
     public:
-    Perpotion(int value) : hpChange{value} {}
-}
+    Perpotion(int value) : value{value} {}
+};
 #endif
