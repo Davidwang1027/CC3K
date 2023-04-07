@@ -190,6 +190,12 @@ void Floor::init(Player* player, int level){
             theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::merchant);
             e = new Merchant();
         }
+        theFloor.at(enemyPos.x).at(enemyPos.y).setEnemy(e);
+        State s = theFloor.at(enemyPos.x).at(enemyPos.y).getState();
+        s.enemy = e;
+        theFloor.at(enemyPos.x).at(enemyPos.y).setState(s);
         enemies.emplace_back(e);
+
+
     }
 }
