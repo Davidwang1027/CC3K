@@ -249,8 +249,8 @@ void Floor::init(Player* player, int level){
                 } else if (potionType == 3){
                     Tempotion* p = new WD(nullptr);
                 } else if (potionType == 4){
-                    Perpotion* p = new RH(nullptr);
                     // add Perpotion and subclass
+                    Perpotion* p = new RH(nullptr);
                 } else if (potionType == 5){
                     Perpotion* p = new LH(nullptr);
                 }
