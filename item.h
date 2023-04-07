@@ -4,7 +4,7 @@ class Item{
     bool isProtected = false;
     std::string name;
 public:
-    Item(bool isProtected, std::string name) : isProtected{ isProtected }, name{ name }{}
+    Item(bool isProtected = false, std::string name = "") : isProtected{ isProtected }, name{ name }{}
     void setIsProtected(){
         this->isProtected = true;
     }

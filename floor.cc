@@ -14,6 +14,7 @@
 #include "dragon.h"
 #include "player.h"
 #include "tempotion.h"
+#include "perpotion.h"
 #include "ba.h"
 #include "bd.h"
 #include "wa.h"

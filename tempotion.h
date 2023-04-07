@@ -5,7 +5,7 @@
 class Player;
 class Tempotion : public Item, public Decorator{
 public:
-    Tempotion(Player* component) : Decorator{ component }{}
+    Tempotion(Player* component) : Decorator{ component } {}
 };
 
 
