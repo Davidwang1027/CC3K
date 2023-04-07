@@ -3,13 +3,22 @@
   "configurations": [
     {
       "name": "C/C++ Runner: Debug Session",
-      "type": "cppvsdbg",
+      "type": "cppdbg",
       "request": "launch",
       "args": [],
       "stopAtEntry": false,
-      "console": "externalTerminal",
-      "cwd": "e:/Waterloo/Courses/Winter 2023/CS246/a5/CC3K",
-      "program": "e:/Waterloo/Courses/Winter 2023/CS246/a5/CC3K/build/Debug/outDebug"
+      "externalConsole": true,
+      "cwd": "d:/2023 winter term/cs 246/cc3k/CC3K",
+      "program": "d:/2023 winter term/cs 246/cc3k/CC3K/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
     }
   ]
 }

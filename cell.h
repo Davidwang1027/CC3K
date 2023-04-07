@@ -4,6 +4,8 @@
 #include "observer.h"
 #include "celltype.h"
 #include "state.h"
+#include "tempotion.h"
+#include "perpotion.h"
 #include <string>
 #include <vector>
 class Enemy;
@@ -17,11 +19,13 @@ class Cell : public Subject<State>, public Observer<State>{
     Enemy* enemy = nullptr;
     Gold* gold = nullptr;
     Suit* suit = nullptr;
+    Tempotion* tempotion = nullptr;
+    Perpotion* perpotion = mullptr;
     bool stairVisible = false;
     std::vector<std::string> display;
 public:
-    Cell(Position pos, CellType type, Player* player, Enemy* enemy, Gold* gold, Suit* suit, bool stairVisible, std::vector<std::string> display) :
-        pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, gold{ gold }, suit{ suit }, stairVisible{ stairVisible }, display{ display }{
+    Cell(Position pos, CellType type, Player* player, Enemy* enemy, Gold* gold, Suit* suit, Tempotion* tempotion, bool stairVisible, std::vector<std::string> display) :
+        pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, gold{ gold }, suit{ suit }, tempotion{ tempotion }, stairVisible{ stairVisible }, display{ display }{
         this->setState({ pos, type, player, enemy, gold, suit, stairVisible, display });
     }
     Cell();
