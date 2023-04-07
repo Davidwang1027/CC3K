@@ -16,6 +16,7 @@ struct State{
     Enemy* enemy;
     Gold* gold;
     Suit* suit;
+
     bool stairVisible;
     std::vector<std::string> display;
 };
