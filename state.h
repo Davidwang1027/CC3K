@@ -8,6 +8,8 @@ class Enemy;
 class Player;
 class Gold;
 class Suit;
+class Perpotion;
+class Tempotion;
 
 struct State{
     Position pos;
@@ -16,7 +18,8 @@ struct State{
     Enemy* enemy;
     Gold* gold;
     Suit* suit;
-
+    Tempotion* tempotion;
+    Perpotion* perpotion;
     bool stairVisible;
     std::vector<std::string> display;
 };

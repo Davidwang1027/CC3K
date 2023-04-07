@@ -24,9 +24,9 @@ class Cell : public Subject<State>, public Observer<State>{
     bool stairVisible = false;
     std::vector<std::string> display;
 public:
-    Cell(Position pos, CellType type, Player* player, Enemy* enemy, Gold* gold, Suit* suit, Tempotion* tempotion, bool stairVisible, std::vector<std::string> display) :
-        pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, gold{ gold }, suit{ suit }, tempotion{ tempotion }, stairVisible{ stairVisible }, display{ display }{
-        this->setState({ pos, type, player, enemy, gold, suit, stairVisible, display });
+    Cell(Position pos, CellType type, Player* player, Enemy* enemy, Gold* gold, Suit* suit, Tempotion* tempotion, Perpotion* perpotion, bool stairVisible, std::vector<std::string> display) :
+        pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, gold{ gold }, suit{ suit }, tempotion{ tempotion }, perpotion{ perpotion }, stairVisible{ stairVisible }, display{ display }{
+        this->setState({ pos, type, player, enemy, gold, suit, tempotion, perpotion, stairVisible, display });
     }
     Cell();
     void setPos(Position pos){
@@ -43,6 +43,12 @@ public:
     }
     void setSuit(Suit* suit){
         this->suit = suit;
+    }
+    void setTempotion(Tempotion* tempotion){
+        this->tempotion = tempotion;
+    }
+    void setPerpotion(Perpotion* perpotion){
+        this->perpotion = perpotion;
     }
     void setType(CellType type){
         this->type = type;
@@ -71,6 +77,13 @@ public:
     Suit* getSuit(){
         return suit;
     }
+    Tempotion* getTempotion(){
+        return tempotion;
+    }
+    Perpotion* getPerpotion(){
+        return perpotion;
+    }
+
     bool getStair(){
         return stairVisible;
     }

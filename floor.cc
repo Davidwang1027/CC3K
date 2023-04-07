@@ -26,7 +26,7 @@
 
 void erase(std::vector<Position>& v, Position p){
     for (size_t i = 0; i < v.size(); i++){
-        if (v.at(i).r == p.r && v.at(i).c == p.c){
+        if (v.at(i).x == p.x && v.at(i).y == p.y){
             v.erase(v.begin() + i);
         }
     }
@@ -242,21 +242,38 @@ void Floor::init(Player* player, int level){
             } else if (item == CellType::potion){
                 theFloor.at(itemPos.x).at(itemPos.y).setType(CellType::potion);
                 int potionType = randomGenerationBasedOnProbability({ 1, 1, 1, 1, 1, 1 }); // 1 RH, 1 BA, 1 BD, 1 PH, 1 WA, 1 WD
-                if (potionType == 0){
-                    Tempotion* p = new BA(nullptr);
-                    // add get and set for Player *component in Decorator
-                } else if (potionType == 1){
-                    Tempotion* p = new BD(nullptr);
-                } else if (potionType == 2){
-                    Tempotion* p = new WA(nullptr);
-                } else if (potionType == 3){
-                    Tempotion* p = new WD(nullptr);
-                } else if (potionType == 4){
-                    Perpotion* p = new RH();
-                    // add Perpotion and subclass
-                } else if (potionType == 5){
-                    Perpotion* p = new PH();
+                if (potionType == 0 || potionType == 1 || potionType == 2 || potionType == 3){
+                    Tempotion* p = nullptr;
+                    if (potionType == 0){
+                        Tempotion* p = new BA(nullptr);
+                        // add get and set for Player *component in Decorator
+                    } else if (potionType == 1){
+                        Tempotion* p = new BD(nullptr);
+                    } else if (potionType == 2){
+                        Tempotion* p = new WA(nullptr);
+                    } else if (potionType == 3){
+                        Tempotion* p = new WD(nullptr);
+                    }
+                    theFloor.at(itemPos.x).at(itemPos.y).setTempotion(p);
+                    State s = theFloor.at(itemPos.x).at(itemPos.y).getState();
+                    s.tempotion = p;
+                    theFloor.at(itemPos.x).at(itemPos.y).setState(s);
+                    items.emplace_back(p);
+                } else if (potionType == 4 || potionType == 5){
+                    Perpotion* p = nullptr;
+                    if (potionType == 4){
+                        Perpotion* p = new RH();
+                    } else if (potionType == 5){
+                        Perpotion* p = new PH();
+                    }
+                    theFloor.at(itemPos.x).at(itemPos.y).setPerpotion(p);
+                    State s = theFloor.at(itemPos.x).at(itemPos.y).getState();
+                    s.perpotion = p;
+                    theFloor.at(itemPos.x).at(itemPos.y).setState(s);
+                    items.emplace_back(p);
                 }
+
+
             }
 
         }
