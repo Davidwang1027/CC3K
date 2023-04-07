@@ -20,7 +20,7 @@ class Cell : public Subject<State>, public Observer<State>{
     Gold* gold = nullptr;
     Suit* suit = nullptr;
     Tempotion* tempotion = nullptr;
-    Perpotion* perpotion = mullptr;
+    Perpotion* perpotion = nullptr;
     bool stairVisible = false;
     std::vector<std::string> display;
 public:
