@@ -1,4 +1,4 @@
-#ifdef PERPOTION_H
+#ifndef PERPOTION_H
 #define PERPOTION_H
 #include "item.h"
 #include <string>
