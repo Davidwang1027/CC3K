@@ -7,7 +7,7 @@
 
 struct State{
     CellType type;
-    std::vector<std::string> display;
+    std::vector<std::string> display; 
 };
 
 #endif
