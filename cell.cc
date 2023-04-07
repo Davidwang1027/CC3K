@@ -6,7 +6,7 @@
 #include "suit.h"
 
 Cell::Cell(){
-    this->setState({ {0, 0}, CellType::empty, nullptr, nullptr, nullptr, nullptr, false, {} });
+    this->setState({ CellType::empty, {} });
 }
 
 void updateDestinations(Entity& e, Position pos){
