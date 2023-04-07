@@ -245,14 +245,14 @@ void Floor::init(Player* player, int level){
                 if (potionType == 0 || potionType == 1 || potionType == 2 || potionType == 3){
                     Tempotion* p = nullptr;
                     if (potionType == 0){
-                        Tempotion* p = new BA(nullptr);
+                        p = new BA(nullptr);
                         // add get and set for Player *component in Decorator
                     } else if (potionType == 1){
-                        Tempotion* p = new BD(nullptr);
+                        p = new BD(nullptr);
                     } else if (potionType == 2){
-                        Tempotion* p = new WA(nullptr);
+                        p = new WA(nullptr);
                     } else if (potionType == 3){
-                        Tempotion* p = new WD(nullptr);
+                        p = new WD(nullptr);
                     }
                     theFloor.at(itemPos.x).at(itemPos.y).setTempotion(p);
                     State s = theFloor.at(itemPos.x).at(itemPos.y).getState();
@@ -262,9 +262,9 @@ void Floor::init(Player* player, int level){
                 } else if (potionType == 4 || potionType == 5){
                     Perpotion* p = nullptr;
                     if (potionType == 4){
-                        Perpotion* p = new RH();
+                        p = new RH();
                     } else if (potionType == 5){
-                        Perpotion* p = new PH();
+                        p = new PH();
                     }
                     theFloor.at(itemPos.x).at(itemPos.y).setPerpotion(p);
                     State s = theFloor.at(itemPos.x).at(itemPos.y).getState();
