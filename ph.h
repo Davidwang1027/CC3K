@@ -3,7 +3,8 @@
 
 #include "perpotion.h"
 
-class PH : public Perpotion {
-    PH() : Perpotion{-10} {}
+class PH : public Perpotion{
+public:
+    PH() : Perpotion{ -10 }{}
 };
 #endif
