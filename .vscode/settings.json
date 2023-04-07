@@ -36,6 +36,12 @@
   "C_Cpp_Runner.useAddressSanitizer": false,
   "files.associations": {
     "*.ejs": "html",
-    "random": "cpp"
+    "random": "cpp",
+    "iosfwd": "cpp",
+    "__bit_reference": "cpp",
+    "deque": "cpp",
+    "ios": "cpp",
+    "__string": "cpp",
+    "vector": "cpp"
   }
 }

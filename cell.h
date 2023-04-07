@@ -26,7 +26,7 @@ class Cell : public Subject<State>, public Observer<State>{
 public:
     Cell(Position pos, CellType type, Player* player, Enemy* enemy, Gold* gold, Suit* suit, Tempotion* tempotion, Perpotion* perpotion, bool stairVisible, std::vector<std::string> display) :
         pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, gold{ gold }, suit{ suit }, tempotion{ tempotion }, perpotion{ perpotion }, stairVisible{ stairVisible }, display{ display }{
-        this->setState({ pos, type, player, enemy, gold, suit, tempotion, perpotion, stairVisible, display });
+        this->setState({ type, display });
     }
     Cell();
     void setPos(Position pos){

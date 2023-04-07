@@ -193,10 +193,9 @@ int randomGenerationBasedOnProbability(std::vector<int> p){
     std::shuffle(tmp.begin(), tmp.end(), rng);
     return tmp.at(0);
 }
-void Floor::init(Player* player, int level){
+void Floor::init(Player& player, int level){
     this->player = player;
     this->level = level;
-    delete td;
     td = new TextDisplay(25, 79);
     mapGenerator("map.txt", theFloor, td);
 
@@ -272,10 +271,7 @@ void Floor::init(Player* player, int level){
                     theFloor.at(itemPos.x).at(itemPos.y).setState(s);
                     items.emplace_back(p);
                 }
-
-
             }
-
         }
     }
 
@@ -310,5 +306,37 @@ void Floor::init(Player* player, int level){
         theFloor.at(enemyPos.x).at(enemyPos.y).setState(s);
         enemies.emplace_back(e);
     }
+}
 
+void Floor::enemyMove(){
+    for (auto row : theFloor){
+        for (auto col : row){
+            if (col.getEnemy() != nullptr){
+                for (int i = -1; i < 2; i++){
+                    for (int j = -1; j < 2; j++){
+
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+
+bool Floor::isOnStair(){
+    if (stair->getPlayer() == nullptr){
+        return false;
+    }
+    return true;
+}
+
+Floor::~Floor(){
+    delete td;
+    for (auto e : enemies){
+        delete e;
+    }
+    for (auto i : items){
+        delete i;
+    }
 }

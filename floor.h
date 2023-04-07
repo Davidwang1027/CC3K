@@ -8,23 +8,29 @@
 #include "cell.h"
 #include "textdisplay.h"
 
+enum class Direction{ no, so, ea, we, ne, nw, se, sw };
 
 class Floor{
     std::vector<std::vector<Cell>> theFloor;
-    std::vector<Enemy> enemies;
-    std::vector<Item> items;
+    std::vector<Enemy*> enemies;
+    std::vector<Item*> items;
     TextDisplay* td;
     Cell* stair;
     // ob *ob;
-    Player* player;
+    Player player;
     int level;
 public:
     std::vector<std::vector<Position>> chamberConstruction();
-    void move();
-    bool isWon();
+    void enemyMove();
+    void playerMove(Direction dir);
+    void playerAttack();
+    void playerUse();
+
+    bool isOnStair();
     bool isLost();
-    void init(Player* player, int level);
+    void init(Player& player, int level);
     friend std::ostream& operator<<(std::ostream& out, const Floor& f);
+    ~Floor();
 };
 
 #endif

@@ -3,13 +3,11 @@
   "configurations": [
     {
       "name": "C/C++ Runner: Debug Session",
-      "type": "cppvsdbg",
+      "type": "lldb",
       "request": "launch",
       "args": [],
-      "stopAtEntry": false,
-      "console": "externalTerminal",
-      "cwd": "d:/2023 winter term/cs 246/cc3k/CC3K",
-      "program": "d:/2023 winter term/cs 246/cc3k/CC3K/build/Debug/outDebug"
+      "cwd": "/Users/davidwang/Library/CloudStorage/OneDrive-UniversityofWaterloo/Academic/2B/CS 246/CC3K",
+      "program": "/Users/davidwang/Library/CloudStorage/OneDrive-UniversityofWaterloo/Academic/2B/CS 246/CC3K/build/Debug/outDebug"
     }
   ]
 }
