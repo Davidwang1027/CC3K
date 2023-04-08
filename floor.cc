@@ -9,6 +9,7 @@
 #include "decorator.h"
 #include "goblin.h"
 #include "troll.h"
+#include "entity.h"
 #include "werewolf.h"
 #include "phoenix.h"
 #include "merchant.h"
