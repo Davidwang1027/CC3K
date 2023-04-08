@@ -383,7 +383,7 @@ void Floor::enemyAction(){
         // Enemy move randomly
         unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
         std::default_random_engine rng{seed};
-        std::vector <Position> dest = e->getDestinations();
+        std::vector<Position> dest = e->getDestinations();
         std::shuffle(dest.begin(), dest.end(), rng);
         Position newPos = dest.at(0);
         enemies.at(i) = newPos;
