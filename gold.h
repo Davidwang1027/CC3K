@@ -4,9 +4,11 @@
 #include "player.h"
 #include "dragon.h"
 #include <string>
+#include "position.h"
 
 class Gold : public Item{
     float value;
+    Position dp;
 public:
     Gold(float value, bool isProtected) : Item(isProtected, "Gold"), value{ value }{}
     void use(Player*& p) override;

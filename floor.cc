@@ -459,6 +459,13 @@ void Floor::playerUse(Position dir){
 
 }
 
+void Floor::goldnavigation(){
+    for (auto item : items) {
+        if (item.) {
+
+        }
+    }
+}
 
 bool Floor::isOnStair(){
     if (stair->getPlayer() == nullptr){

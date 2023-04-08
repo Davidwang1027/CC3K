@@ -3,7 +3,7 @@
 #include "item.h"
 #include "player.h"
 #include "dragon.h"
-
+#include "position.h"
 
 class Player;
 class Suit : public Item{

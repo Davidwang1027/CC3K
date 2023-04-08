@@ -33,6 +33,7 @@ public:
     void playerMove(Position dir);
     void playerAttack(Position dir);
     void playerUse(Position dir);
+    void goldnavigation();
     bool isOnStair();
     void init(Player*& player, int level, int suitLevel);
     friend std::ostream& operator<<(std::ostream& out, const Floor& f);
