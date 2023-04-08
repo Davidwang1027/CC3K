@@ -11,6 +11,8 @@ public:
     std::string attack(Player& p) override{
         if (hostile){
             return(this->attack(p));
+        } else{
+            return "";
         }
     };
 };

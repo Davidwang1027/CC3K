@@ -26,10 +26,10 @@ class Cell : public Subject<State>{
 public:
     Cell(Position pos, CellType type, Player* player, Enemy* enemy, Gold* gold, Suit* suit, Tempotion* tempotion, Perpotion* perpotion, bool stairVisible, std::string action) :
         pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, gold{ gold }, suit{ suit }, tempotion{ tempotion }, perpotion{ perpotion }, stairVisible{ stairVisible }, action{ action }{
-        this->setState({ type, action });
+        this->setState({ pos, type, action });
     }
-    Cell() {
-        this->setState({CellType::empty, {}});
+    Cell(){
+        this->setState({ {114, 514}, CellType::empty, "" });
     }
     void setPos(Position pos){
         this->pos = pos;

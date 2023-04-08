@@ -6,6 +6,7 @@
 #include <vector>
 
 struct State{
+    Position pos;
     CellType type;
     std::string action;
 };

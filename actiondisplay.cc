@@ -1,7 +1,9 @@
 #include "actiondisplay.h"
 #include "subject.h"
 void ActionDisplay::notify(Subject<State>& whoNotified){
-    display.emplace_back(whoNotified.getState().action);
+    if (whoNotified.getState().action != ""){
+        display.emplace_back(whoNotified.getState().action);
+    }
 }
 
 std::ostream& operator<<(std::ostream& out, const ActionDisplay& ad){

@@ -4,6 +4,7 @@
 #include <chrono>
 #include <random>
 #include <algorithm>
+#include <exception>
 #include "vampire.h"
 #include "decorator.h"
 #include "goblin.h"
@@ -23,6 +24,7 @@
 #include "ph.h"
 #include "gold.h"
 
+class Exception{};
 
 void erase(std::vector<Position>& v, Position p){
     for (size_t i = 0; i < v.size(); i++){
@@ -145,8 +147,8 @@ std::ostream& operator<<(std::ostream& out, const Floor& f){
     return out;
 }
 
-//
-void mapGenerator(std::string filename, std::vector<std::vector<Cell>>& theFloor, TextDisplay* td){
+// 
+void Floor::mapGenerator(std::string filename){
     std::ifstream file {filename};
     std::string line;
     size_t row = 0;
@@ -155,6 +157,7 @@ void mapGenerator(std::string filename, std::vector<std::vector<Cell>>& theFloor
         for (size_t i = 0; i < line.length(); i++){
             Cell cell;
             cell.attach(td);
+            cell.attach(ad);
             char c = line[i];
             if (c == '|'){
                 cell.setType(CellType::vWall);
@@ -197,7 +200,8 @@ void Floor::init(Player& player, int level){
     this->player = player;
     this->level = level;
     td = new TextDisplay(25, 79);
-    mapGenerator("map.txt", theFloor, td);
+    ad = new ActionDisplay();
+    mapGenerator("map.txt");
 
     std::vector<std::vector<Position>> chambers = chamberConstruction();
     // generate items
@@ -229,14 +233,13 @@ void Floor::init(Player& player, int level){
                     erase(chambers[i], dragonPos);
                     theFloor.at(dragonPos.x).at(dragonPos.y).setType(CellType::dragon);
                     theFloor.at(dragonPos.x).at(dragonPos.y).setEnemy(d);
-                    State dragonState = theFloor.at(dragonPos.x).at(dragonPos.y).getState();
-                    dragonState.enemy = d;
+                    State dragonState = { dragonPos, CellType::dragon, "" };
                     theFloor.at(dragonPos.x).at(dragonPos.y).setState(dragonState);
-                    enemies.emplace_back(d);
+                    theFloor.at(dragonPos.x).at(dragonPos.y).notifyObservers();
                 }
-                State s = theFloor.at(itemPos.x).at(itemPos.y).getState();
-                s.gold = g;
-                theFloor.at(itemPos.x).at(itemPos.y).setState(s);
+                theFloor.at(itemPos.x).at(itemPos.y).setGold(g);
+                State goldState = { itemPos, CellType::gold, "" };
+                theFloor.at(itemPos.x).at(itemPos.y).setState(goldState);
                 items.emplace_back(g);
             } else if (item == CellType::potion){
                 theFloor.at(itemPos.x).at(itemPos.y).setType(CellType::potion);
@@ -254,9 +257,6 @@ void Floor::init(Player& player, int level){
                         p = new WD(nullptr);
                     }
                     theFloor.at(itemPos.x).at(itemPos.y).setTempotion(p);
-                    State s = theFloor.at(itemPos.x).at(itemPos.y).getState();
-                    s.tempotion = p;
-                    theFloor.at(itemPos.x).at(itemPos.y).setState(s);
                     items.emplace_back(p);
                 } else if (potionType == 4 || potionType == 5){
                     Perpotion* p = nullptr;
@@ -266,12 +266,12 @@ void Floor::init(Player& player, int level){
                         p = new PH();
                     }
                     theFloor.at(itemPos.x).at(itemPos.y).setPerpotion(p);
-                    State s = theFloor.at(itemPos.x).at(itemPos.y).getState();
-                    s.perpotion = p;
-                    theFloor.at(itemPos.x).at(itemPos.y).setState(s);
                     items.emplace_back(p);
                 }
+                State s = { itemPos, CellType::potion, "" };
+                theFloor.at(itemPos.x).at(itemPos.y).setState(s);
             }
+            theFloor.at(itemPos.x).at(itemPos.y).notifyObservers();
         }
     }
 
@@ -282,47 +282,85 @@ void Floor::init(Player& player, int level){
         Position enemyPos = randomPosition(chambers.at(chamberNum));
         Enemy* e;
         if (enemy == CellType::vampire){
-            theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::vampire);
             e = new Vampire();
         } else if (enemy == CellType::werewolf){
-            theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::werewolf);
             e = new Werewolf();
         } else if (enemy == CellType::goblin){
-            theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::goblin);
             e = new Goblin();
         } else if (enemy == CellType::troll){
-            theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::troll);
             e = new Troll();
         } else if (enemy == CellType::phoenix){
-            theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::phoenix);
             e = new Phoenix();
         } else if (enemy == CellType::merchant){
-            theFloor.at(enemyPos.x).at(enemyPos.y).setType(CellType::merchant);
             e = new Merchant();
         }
+        theFloor.at(enemyPos.x).at(enemyPos.y).setType(enemy);
         theFloor.at(enemyPos.x).at(enemyPos.y).setEnemy(e);
-        State s = theFloor.at(enemyPos.x).at(enemyPos.y).getState();
-        s.enemy = e;
+        State s = { enemyPos, enemy , "" };
         theFloor.at(enemyPos.x).at(enemyPos.y).setState(s);
+        theFloor.at(enemyPos.x).at(enemyPos.y).notifyObservers();
         enemies.emplace_back(e);
     }
 }
 
-void Floor::enemyMove(){
+void Floor::enemyAction(){
     for (auto row : theFloor){
         for (auto col : row){
             if (col.getEnemy() != nullptr){
+                Enemy* e = col.getEnemy();
+                CellType enemyType = col.getCellType();
                 for (int i = -1; i < 2; i++){
                     for (int j = -1; j < 2; j++){
-
+                        CellType neighbor = theFloor.at(col.getPos().x + i).at(col.getPos().y + j).getCellType();
+                        if (neighbor == CellType::player){
+                            Position pPos = theFloor.at(col.getPos().x + i).at(col.getPos().y + j).getPos();
+                            Player& p = *(theFloor.at(col.getPos().x + i).at(col.getPos().y + j).getPlayer());
+                            std::string action = e->attack(p);
+                            State s = { col.getPos(),col.getCellType(), action };
+                            col.setState(s);
+                            col.notifyObservers();
+                            if (p.getHp() <= 0){
+                                theFloor.at(pPos.x).at(pPos.y).setType(CellType::tile);
+                                theFloor.at(pPos.x).at(pPos.y).setState({ pPos, CellType::tile, "You lose!" });
+                                theFloor.at(pPos.x).at(pPos.y).notifyObservers();
+                                return;
+                            }
+                        } else if (neighbor == CellType::tile){
+                            e->addDestination({ col.getPos().x + i, col.getPos().y + j });
+                        }
                     }
                 }
+                // Enemy move randomly
+                unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+                std::default_random_engine rng{seed};
+                std::vector <Position> dest = e->getDestinations();
+                std::shuffle(dest.begin(), dest.end(), rng);
+                Position newPos = dest.at(0);
+                if (stair != nullptr){
+                    if (stair->getPos().x == col.getPos().x && stair->getPos().y == col.getPos().y){
+                        stair->setEnemy(nullptr);
+                        stair->setType(CellType::stair);
+                        stair->setState({ stair->getPos(), CellType::stair, "" });
+                        stair->notifyObservers();
+                    }
+                } else{
+                    col.setEnemy(nullptr);
+                    col.setType(CellType::tile);
+                    col.setState({ col.getPos(), CellType::tile, "" });
+                    col.notifyObservers();
+                }
+                theFloor.at(newPos.x).at(newPos.y).setEnemy(e);
+                theFloor.at(newPos.x).at(newPos.y).setType(enemyType);
+                theFloor.at(newPos.x).at(newPos.y).setState({ newPos, enemyType, "" });
+                theFloor.at(newPos.x).at(newPos.y).notifyObservers();
             }
-
         }
     }
 }
 
+void Floor::playerMove(Postion){
+    Position dest =
+}
 
 bool Floor::isOnStair(){
     if (stair->getPlayer() == nullptr){

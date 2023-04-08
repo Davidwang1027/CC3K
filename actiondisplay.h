@@ -9,6 +9,7 @@
 class ActionDisplay : public Observer<State>{
     std::vector<std::string> display;
 public:
+    ActionDisplay() : display{ {} }{}
     void notify(Subject<State>& whoNotified) override;
     friend std::ostream& operator<<(std::ostream& out, const ActionDisplay& ad);
     void clear(){

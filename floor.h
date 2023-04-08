@@ -7,6 +7,8 @@
 #include "item.h"
 #include "cell.h"
 #include "textdisplay.h"
+#include "actiondisplay.h"
+
 
 enum class Direction{ no, so, ea, we, ne, nw, se, sw };
 
@@ -15,17 +17,18 @@ class Floor{
     std::vector<Enemy*> enemies;
     std::vector<Item*> items;
     TextDisplay* td;
+    ActionDisplay* ad;
     Cell* stair;
     // ob *ob;
     Player player;
     int level;
 public:
+    void mapGenerator(std::string filename);
     std::vector<std::vector<Position>> chamberConstruction();
-    void enemyMove();
+    void enemyAction();
     void playerMove(Direction dir);
     void playerAttack();
     void playerUse();
-
     bool isOnStair();
     bool isLost();
     void init(Player& player, int level);
