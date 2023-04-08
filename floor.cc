@@ -455,9 +455,15 @@ void Floor::playerMove(Position dir){
 
 void Floor::playerAttack(Position dir){
     Cell& target = theFloor.at(dir.x).at(dir.y);
-    if ((target.getCellType() == CellType::vampire) || )
-}
+    if ((target.getCellType() == CellType::vampire) ||
+        (target.getCellType() == CellType::werewolf) ||
+        (target.getCellType() == CellType::troll) ||
+        (target.getCellType() == CellType::goblin) ||
+        (target.getCellType() == CellType::phoenix)){
+        std::string action = player->attack(*(target.getEnemy()));
 
+    }
+}
 void Floor::playerUse(Position dir){
     Cell useCell = theFloor.at(dir.x).at(dir.y);
     if (useCell.getPerpotion() != nullptr){
