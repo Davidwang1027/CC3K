@@ -25,16 +25,16 @@ class Floor{
     Player* player;
     Position playerPos;
     int level;
+    int suitLevel;
 public:
     void mapGenerator(std::string filename);
     std::vector<std::vector<Position>> chamberConstruction();
     void enemyAction();
     void playerMove(Position dir);
-    void playerAttack();
-    void playerUse();
+    void playerAttack(Position dir);
+    void playerUse(Position dir);
     bool isOnStair();
-    bool isLost();
-    void init(Player*& player, int level);
+    void init(Player*& player, int level, int suitLevel);
     friend std::ostream& operator<<(std::ostream& out, const Floor& f);
     ~Floor();
 };
