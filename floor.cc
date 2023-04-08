@@ -489,9 +489,33 @@ void Floor::playerMove(Position dir){
 
 void Floor::playerAttack(Position dir){
     Cell& target = theFloor.at(dir.x).at(dir.y);
-    if ((target.getCellType() == CellType::vampire) || )
+    CellType ct = target.getCellType();
+    if ((ct == CellType::vampire) ||
+        (ct == CellType::werewolf) ||
+        (ct == CellType::troll) ||
+        (ct == CellType::goblin) ||
+        (ct == CellType::phoenix)){
+        std::string action = player->attack(*(target.getEnemy()));
+        State s = { playerPos, CellType::player, action };
+        // If enemy is dead, remove it from the floor
+        if (target.getEnemy()->getHp() <= 0){
+            // Remove enemy from enemies vector
+            for (int i = 0; i < enemies.size(); i++){
+                if (enemies.at(i).x == dir.x && enemies.at(i).y == dir.y){
+                    enemies.erase(enemies.begin() + i);
+                }
+            }
+            // delete enemy
+            delete target.getEnemy();
+            target.setEnemy(nullptr);
+            target.setType(CellType::tile);
+            target.setState({ dir, CellType::tile, "" });
+            target.notifyObservers();
+        }
+        theFloor.at(playerPos.x).at(playerPos.y).setState(s);
+        theFloor.at(playerPos.x).at(playerPos.y).notifyObservers();
+    }
 }
-
 void Floor::playerUse(Position dir){
     Cell useCell = theFloor.at(dir.x).at(dir.y);
     if (useCell.getPerpotion() != nullptr){
@@ -504,6 +528,13 @@ void Floor::playerUse(Position dir){
     }
 }
 
+void Floor::goldnavigation(){
+    for (auto item : items){
+        if (item.){
+
+        }
+    }
+}
 
 bool Floor::isOnStair(){
     if (stair->getPlayer() == nullptr){
