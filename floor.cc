@@ -25,8 +25,8 @@
 #include "ph.h"
 #include "gold.h"
 #include "suit.h"
+#include "exception.h"
 
-class Exception{};
 
 void erase(std::vector<Position>& v, Position p){
     for (size_t i = 0; i < v.size(); i++){

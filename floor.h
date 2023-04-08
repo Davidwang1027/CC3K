@@ -27,6 +27,7 @@ class Floor{
     int level;
     int suitLevel;
 public:
+    Floor();
     void mapGenerator(std::string filename);
     std::vector<std::vector<Position>> chamberConstruction();
     void enemyAction();
