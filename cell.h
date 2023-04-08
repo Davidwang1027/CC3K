@@ -92,7 +92,7 @@ public:
     std::string getAction(){
         return action;
     }
-    ~Cell() {
+    ~Cell(){
         delete enemy;
         delete gold;
         delete suit;

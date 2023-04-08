@@ -384,7 +384,10 @@ void Floor::enemyAction(){
         // Enemy move randomly
         unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
         std::default_random_engine rng{seed};
-        std::vector<Position> dest = e->getDestinations();
+        std::vector<Position> dest;
+        for (int i = 0; i < e->getDestinations().size(); i++){
+            dest.emplace_back(e->getDestinations().at(i));
+        }
         std::shuffle(dest.begin(), dest.end(), rng);
         Position newPos = dest.at(0);
         enemies.at(i) = newPos;
@@ -412,14 +415,27 @@ std::string Floor::navigation(Position dir){
     std::string result = "";
     for (int i = -1; i < 2; i++){
         for (int j = -1; j < 2; j++){
-            if (theFloor.at(dir.x+i).at(dir.y+j).getEnemy() != nullptr) {
-                result += " and sees a ";
-                result += (theFloor.at(dir.x+i).at(dir.y+j).getEnemy())->getName();
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::gold) {
-                if ((theFloor.at(dir.x+i).at(dir.y+j).getGold()->getIsProtected())) {
-                    result += "and sees a dragon hoard.";
-                } else {
-                    result += "and sees a pile of golds.";
+            if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::goblin){
+                result += " and sees a Goblin.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::vampire){
+                result += " and sees a Vampire.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::troll){
+                result += " and sees a Troll.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::dragon){
+                result += " and sees a Dragon.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::werewolf){
+                result += " and sees a Werewolf.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::merchant){
+                result += " and sees a Merchant.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::phoenix){
+                result += " and sees a Phoenix.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::potion){
+                result += " and sees an unknown potion.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::gold){
+                if ((theFloor.at(dir.x + i).at(dir.y + j).getGold()->getIsProtected())){
+                    result += " and sees a dragon hoard.";
+                } else{
+                    result += " and sees a pile of golds.";
                 }
             } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::suit){
                 if ((theFloor.at(dir.x + i).at(dir.y + j).getSuit()->getIsProtected())){
@@ -473,6 +489,31 @@ void Floor::playerMove(Position dir){
         return;
     }
     // Passage/door recovers
+    // If the player is on a passage/door
+    for (int i = 0; i < passages.size(); i++){
+        Position p = passages.at(i);
+        if (p.x == playerPos.x && p.y == playerPos.y){
+            theFloor.at(p.x).at(p.y).setType(CellType::passage);
+            theFloor.at(p.x).at(p.y).setState({ p, CellType::passage, "" });
+            theFloor.at(p.x).at(p.y).notifyObservers();
+            return;
+        }
+    }
+    for (int i = 0; i < doors.size(); i++){
+        Position p = doors.at(i);
+        if (p.x == playerPos.x && p.y == playerPos.y){
+            theFloor.at(p.x).at(p.y).setType(CellType::door);
+            theFloor.at(p.x).at(p.y).setState({ p, CellType::door, "" });
+            theFloor.at(p.x).at(p.y).notifyObservers();
+            return;
+        }
+    }
+    // Recovers the previous tile
+    theFloor.at(playerPos.x).at(playerPos.y).setType(CellType::tile);
+    theFloor.at(playerPos.x).at(playerPos.y).setState({ playerPos, CellType::tile, "" });
+    theFloor.at(playerPos.x).at(playerPos.y).notifyObservers();
+    playerPos.x = dir.x;
+    playerPos.y = dir.y;
 }
 
 void Floor::playerAttack(Position dir){
@@ -482,9 +523,19 @@ void Floor::playerAttack(Position dir){
         (ct == CellType::werewolf) ||
         (ct == CellType::troll) ||
         (ct == CellType::goblin) ||
-        (ct == CellType::phoenix)){
+        (ct == CellType::phoenix) ||
+        (ct == CellType::merchant) ||
+        (ct == CellType::dragon)){
         std::string action = player->attack(*(target.getEnemy()));
         State s = { playerPos, CellType::player, action };
+        if (ct == CellType::merchant){
+            for (int i = 0; i < enemies.size(); i++){
+                CellType t = theFloor.at(enemies.at(i).x).at(enemies.at(i).y).getCellType();
+                if (t == CellType::merchant){
+                    theFloor.at(enemies.at(i).x).at(enemies.at(i).y).getEnemy()->setHostile(true);
+                }
+            }
+        }
         // If enemy is dead, remove it from the floor
         if (target.getEnemy()->getHp() <= 0){
             // Remove enemy from enemies vector
@@ -507,6 +558,7 @@ void Floor::playerAttack(Position dir){
         return;
     }
 }
+
 void Floor::playerUse(Position dir){
     Cell useCell = theFloor.at(dir.x).at(dir.y);
     if (useCell.getPerpotion() != nullptr){
