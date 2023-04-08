@@ -546,6 +546,17 @@ void Floor::playerAttack(Position dir){
                     enemies.erase(enemies.begin() + i);
                 }
             }
+            if (ct == CellType::dragon){
+                for (int i = 0; i < items.size(); i++){
+                    CellType t = theFloor.at(items.at(i).x).at(items.at(i).y).getCellType();
+                    if (t == CellType::suit){
+                        theFloor.at(items.at(i).x).at(items.at(i).y).getSuit()->setIsProtected(false);
+                    }
+                    if (t == CellType::gold){
+                        theFloor.at(items.at(i).x).at(items.at(i).y).getGold()->setIsProtected(false);
+                    }
+                }
+            }
             // delete enemy
             delete target.getEnemy();
             target.setEnemy(nullptr);
