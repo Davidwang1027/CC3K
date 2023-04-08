@@ -408,8 +408,15 @@ void Floor::enemyAction(){
     }
 }
 
-std::string navigation(Position dir){
-
+std::string Floor::navigation(Position dir){
+    std::string result = "";
+    for (int i = -1; i < 2; i++){
+        for (int j = -1; j < 2; j++){
+            if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::goblin) {
+                theFloor.at(dir.x+i).at(dir.y+j).setState({ {dir.x+i, dir.y+j}, CellType::goblin})
+            }
+        }
+    }
 }
 void Floor::playerMove(Position dir){
     Cell dest = theFloor.at(dir.x).at(dir.y);
