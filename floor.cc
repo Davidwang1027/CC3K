@@ -358,8 +358,13 @@ void Floor::enemyAction(){
     }
 }
 
-void Floor::playerMove(Postion){
-    Position dest =
+void Floor::playerMove(Position dir){
+    State s = theFloor.at(dir.x).at(dir.y).getState();
+    if ((s.type == CellType::tile) ||
+    (s.type == CellType::passage) ||
+    (s.type == CellType::door)) {
+        theFloor.
+    }
 }
 
 bool Floor::isOnStair(){
