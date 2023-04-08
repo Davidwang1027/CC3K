@@ -26,7 +26,7 @@ public:
     void mapGenerator(std::string filename);
     std::vector<std::vector<Position>> chamberConstruction();
     void enemyAction();
-    void playerMove(Direction dir);
+    void playerMove(Position dir);
     void playerAttack();
     void playerUse();
     bool isOnStair();
