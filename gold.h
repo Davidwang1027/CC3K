@@ -3,6 +3,8 @@
 #include "item.h"
 #include "player.h"
 #include "dragon.h"
+#include <string>
+
 class Gold : public Item{
     float value;
     Dragon* dragon = nullptr;
@@ -14,9 +16,7 @@ public:
         return dragon;
     }
     // no need for setValue method because value is set in the constructor
-    float getValue(){
-        return value;
-    }
+    std::string getValue();
 };
 
 #endif
