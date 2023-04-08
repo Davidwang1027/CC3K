@@ -36,6 +36,7 @@ public:
     void goldnavigation();
     bool isOnStair();
     void init(Player*& player, int level, int suitLevel);
+    std::string Floor::navigation(Position dir);
     friend std::ostream& operator<<(std::ostream& out, const Floor& f);
     ~Floor();
 };

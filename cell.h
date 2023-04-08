@@ -92,6 +92,13 @@ public:
     std::string getAction(){
         return action;
     }
+    ~Cell() {
+        delete enemy;
+        delete gold;
+        delete suit;
+        delete tempotion;
+        delete perpotion;
+    }
 };
 
 #endif
