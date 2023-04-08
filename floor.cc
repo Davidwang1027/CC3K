@@ -216,7 +216,7 @@ void Floor::init(Player*& player, int level, int suitLevel){
         int chamberNum = chamberRandomGeneration();
         Position suitPos = randomPosition(chambers.at(chamberNum));
         // Generate suit
-        Suit* s = new Suit(true);
+        Suit* s = new Suit(true, Position{114, 514});
         theFloor.at(suitPos.x).at(suitPos.y).setType(CellType::suit);
         State suitState = { suitPos, CellType::suit, "" };
         items.emplace_back(suitPos);
@@ -232,6 +232,7 @@ void Floor::init(Player*& player, int level, int suitLevel){
             }
         }
         Position dragonPos = randomPosition(availablePos);
+        theFloor.at(suitPos.x).at(suitPos.y).getSuit()->setdp(dragonPos);
         erase(chambers[chamberNum], dragonPos);
         theFloor.at(dragonPos.x).at(dragonPos.y).setType(CellType::dragon);
         theFloor.at(dragonPos.x).at(dragonPos.y).setEnemy(d);
@@ -251,11 +252,11 @@ void Floor::init(Player*& player, int level, int suitLevel){
                 Gold* g = nullptr;
                 int goldType = randomGenerationBasedOnProbability({ 2, 1, 1 }); // 2 normal, 1 small, 1 dragon every 4 gold
                 if (goldType == 0){
-                    g = new Gold(1, false);
+                    g = new Gold(1, false, Position{114, 514});
                 } else if (goldType == 1){
-                    g = new Gold(2, false);
+                    g = new Gold(2, false, Position{114, 514});
                 } else if (goldType == 2){
-                    g = new Gold(6, true);
+                    g = new Gold(6, true, Position{114, 514});
                     Dragon<Gold>* d = new Dragon<Gold>(g);
                     std::vector<Position> availablePos;
                     for (int i = -1; i < 2; i++){
@@ -266,6 +267,7 @@ void Floor::init(Player*& player, int level, int suitLevel){
                         }
                     }
                     Position dragonPos = randomPosition(availablePos);
+                    theFloor.at(itemPos.x).at(itemPos.y).getGold()->setdp(dragonPos);
                     erase(chambers[i], dragonPos);
                     theFloor.at(dragonPos.x).at(dragonPos.y).setType(CellType::dragon);
                     theFloor.at(dragonPos.x).at(dragonPos.y).setEnemy(d);
@@ -573,8 +575,38 @@ void Floor::playerUse(Position dir){
 
 void Floor::goldnavigation(){
     for (auto item : items){
-        if (item.){
+        if (theFloor.at(item.x).at(item.y).getCellType() == CellType::gold){
+            if (theFloor.at(item.x).at(item.y).getGold()->getIsProtected()){
+                Position dp = theFloor.at(item.x).at(item.y).getGold()->getdp();
+                for (int i = -1; i < 2; i++) {
+                    for (int j = -1; j < 2; j++){
+                        if (theFloor.at(item.x + i).at(item.y + j).getCellType() == CellType::player) {
+                            theFloor.at(dp.x).at(dp.y).getEnemy()->setHostile(true);
+                            return;
+                        }
+                    }
+                }
+                theFloor.at(dp.x).at(dp.y).getEnemy()->setHostile(false);
+            }
+        }
+    }
+}
 
+void Floor::suitnavigation(){
+    for (auto item : items){
+        if (theFloor.at(item.x).at(item.y).getCellType() == CellType::suit){
+            if (theFloor.at(item.x).at(item.y).getSuit()->getIsProtected()){
+                Position dp = theFloor.at(item.x).at(item.y).getSuit()->getdp();
+                for (int i = -1; i < 2; i++) {
+                    for (int j = -1; j < 2; j++){
+                        if (theFloor.at(item.x + i).at(item.y + j).getCellType() == CellType::player) {
+                            theFloor.at(dp.x).at(dp.y).getEnemy()->setHostile(true);
+                            return;
+                        } 
+                    }
+                }
+                theFloor.at(dp.x).at(dp.y).getEnemy()->setHostile(false);
+            }
         }
     }
 }

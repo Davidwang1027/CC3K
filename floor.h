@@ -35,6 +35,7 @@ public:
     void playerAttack(Position dir);
     void playerUse(Position dir);
     void goldnavigation();
+    void suitnavigation();
     bool isOnStair();
     void init(Player*& player, int level, int suitLevel);
     std::string Floor::navigation(Position dir);

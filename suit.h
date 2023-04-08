@@ -7,8 +7,11 @@
 
 class Player;
 class Suit : public Item{
+    Position dp;
 public:
-    Suit(bool isProtected) : Item(isProtected, "Suit"){}
+    Suit(bool isProtected, Position dp) : Item(isProtected, "Suit"), dp{ dp } {}
+    Position getdp() { return dp; }
+    void setdp(Position dp) { this->dp = dp; }
     void use(Player*& p){ p->setSuit(true); };
 };
 
