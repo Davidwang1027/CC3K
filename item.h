@@ -1,3 +1,5 @@
+#ifndef ITEM_H
+#define ITEM_H
 #include "cell.h"
 #include "player.h"
 class Item{
@@ -19,3 +21,5 @@ public:
     }
     virtual void use(Player*& p) = 0;
 };
+
+#endif

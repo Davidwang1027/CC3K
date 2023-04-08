@@ -7,13 +7,9 @@
 
 class Player;
 class Suit : public Item{
-    Dragon* dragon = nullptr;
 public:
-    Suit(bool isProtected, Dragon* dragon) : Item(isProtected, "Suit"), dragon{ dragon }{}
+    Suit(bool isProtected) : Item(isProtected, "Suit"){}
     void use(Player*& p){ p->setSuit(true); };
-    Dragon* getDragon(){
-        return dragon;
-    }
 };
 
 #endif
