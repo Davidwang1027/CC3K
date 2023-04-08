@@ -14,8 +14,8 @@ enum class Direction{ no, so, ea, we, ne, nw, se, sw };
 
 class Floor{
     std::vector<std::vector<Cell>> theFloor;
-    std::vector<Enemy*> enemies;
-    std::vector<Item*> items;
+    std::vector<Position> enemies;
+    std::vector<Position> items;
     std::vector<Position> passages;
     std::vector<Position> doors;
     TextDisplay* td;
