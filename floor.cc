@@ -218,7 +218,7 @@ void Floor::init(Player*& player, int level, int suitLevel){
         Suit* s = new Suit(true);
         theFloor.at(suitPos.x).at(suitPos.y).setType(CellType::suit);
         State suitState = { suitPos, CellType::suit, "" };
-        items.emplace_back(s);
+        items.emplace_back(suitPos);
 
         // Generate dragon, could be improved by helper function
         Dragon<Suit>* d = new Dragon<Suit>(s);
@@ -275,7 +275,7 @@ void Floor::init(Player*& player, int level, int suitLevel){
                 theFloor.at(itemPos.x).at(itemPos.y).setGold(g);
                 State goldState = { itemPos, CellType::gold, "" };
                 theFloor.at(itemPos.x).at(itemPos.y).setState(goldState);
-                items.emplace_back(g);
+                items.emplace_back(itemPos);
             } else if (item == CellType::potion){
                 theFloor.at(itemPos.x).at(itemPos.y).setType(CellType::potion);
                 int potionType = randomGenerationBasedOnProbability({ 1, 1, 1, 1, 1, 1 }); // 1 RH, 1 BA, 1 BD, 1 PH, 1 WA, 1 WD
@@ -292,7 +292,7 @@ void Floor::init(Player*& player, int level, int suitLevel){
                         p = new WD(nullptr);
                     }
                     theFloor.at(itemPos.x).at(itemPos.y).setTempotion(p);
-                    items.emplace_back(p);
+                    items.emplace_back(itemPos);
                 } else if (potionType == 4 || potionType == 5){
                     Perpotion* p = nullptr;
                     if (potionType == 4){
@@ -301,7 +301,7 @@ void Floor::init(Player*& player, int level, int suitLevel){
                         p = new PH();
                     }
                     theFloor.at(itemPos.x).at(itemPos.y).setPerpotion(p);
-                    items.emplace_back(p);
+                    items.emplace_back(itemPos);
                 }
                 State s = { itemPos, CellType::potion, "" };
                 theFloor.at(itemPos.x).at(itemPos.y).setState(s);
@@ -334,7 +334,7 @@ void Floor::init(Player*& player, int level, int suitLevel){
         State s = { enemyPos, enemy , "" };
         theFloor.at(enemyPos.x).at(enemyPos.y).setState(s);
         theFloor.at(enemyPos.x).at(enemyPos.y).notifyObservers();
-        enemies.emplace_back(e);
+        enemies.emplace_back(enemyPos);
         if (i == 10){ //  <<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>
             e->setCompass();
         }
@@ -354,63 +354,65 @@ void Floor::init(Player*& player, int level, int suitLevel){
 }
 
 void Floor::enemyAction(){
-    for (auto row : theFloor){
-        for (auto col : row){
-            if (col.getEnemy() != nullptr){
-                Enemy* e = col.getEnemy();
-                CellType enemyType = col.getCellType();
-                for (int i = -1; i < 2; i++){
-                    for (int j = -1; j < 2; j++){
-                        CellType neighbor = theFloor.at(col.getPos().x + i).at(col.getPos().y + j).getCellType();
-                        if (neighbor == CellType::player){
-                            Position pPos = theFloor.at(col.getPos().x + i).at(col.getPos().y + j).getPos();
-                            Player& p = *(theFloor.at(col.getPos().x + i).at(col.getPos().y + j).getPlayer());
-                            std::string action = e->attack(p);
-                            State s = { col.getPos(),col.getCellType(), action };
-                            col.setState(s);
-                            col.notifyObservers();
-                            if (p.getHp() <= 0){
-                                theFloor.at(pPos.x).at(pPos.y).setType(CellType::tile);
-                                theFloor.at(pPos.x).at(pPos.y).setState({ pPos, CellType::tile, "You lose!" });
-                                theFloor.at(pPos.x).at(pPos.y).notifyObservers();
-                                return;
-                            }
-                        } else if (neighbor == CellType::tile){
-                            e->addDestination({ col.getPos().x + i, col.getPos().y + j });
-                        }
+    for (int i = 0; i < enemies.size(); i++){
+        Position enemyPos = enemies.at(i);
+        Cell& ec = theFloor.at(enemyPos.x).at(enemyPos.y);
+        Enemy* e = ec.getEnemy();
+        CellType enemyType = ec.getCellType();
+        for (int i = -1; i < 2; i++){
+            for (int j = -1; j < 2; j++){
+                CellType neighbor = theFloor.at(ec.getPos().x + i).at(ec.getPos().y + j).getCellType();
+                if (neighbor == CellType::player){
+                    Position pPos = theFloor.at(ec.getPos().x + i).at(ec.getPos().y + j).getPos();
+                    Player& p = *(theFloor.at(ec.getPos().x + i).at(ec.getPos().y + j).getPlayer());
+                    std::string action = e->attack(p);
+                    State s = { ec.getPos(),ec.getCellType(), action };
+                    ec.setState(s);
+                    ec.notifyObservers();
+                    if (p.getHp() <= 0){
+                        theFloor.at(pPos.x).at(pPos.y).setType(CellType::tile);
+                        theFloor.at(pPos.x).at(pPos.y).setState({ pPos, CellType::tile, "You lose!" });
+                        theFloor.at(pPos.x).at(pPos.y).notifyObservers();
+                        return;
                     }
+                } else if (neighbor == CellType::tile){
+                    e->addDestination({ ec.getPos().x + i, ec.getPos().y + j });
                 }
-                // Enemy move randomly
-                unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-                std::default_random_engine rng{seed};
-                std::vector <Position> dest = e->getDestinations();
-                std::shuffle(dest.begin(), dest.end(), rng);
-                Position newPos = dest.at(0);
-                if (stair != nullptr){
-                    if (stair->getPos().x == col.getPos().x && stair->getPos().y == col.getPos().y){
-                        stair->setEnemy(nullptr);
-                        stair->setType(CellType::stair);
-                        stair->setState({ stair->getPos(), CellType::stair, "" });
-                        stair->notifyObservers();
-                    }
-                } else{
-                    col.setEnemy(nullptr);
-                    col.setType(CellType::tile);
-                    col.setState({ col.getPos(), CellType::tile, "" });
-                    col.notifyObservers();
-                }
-                theFloor.at(newPos.x).at(newPos.y).setEnemy(e);
-                theFloor.at(newPos.x).at(newPos.y).setType(enemyType);
-                theFloor.at(newPos.x).at(newPos.y).setState({ newPos, enemyType, "" });
-                theFloor.at(newPos.x).at(newPos.y).notifyObservers();
             }
         }
+        // Enemy move randomly
+        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        std::default_random_engine rng{seed};
+        std::vector <Position> dest = e->getDestinations();
+        std::shuffle(dest.begin(), dest.end(), rng);
+        Position newPos = dest.at(0);
+        enemies.at(i) = newPos;
+        if (stair != nullptr){
+            if (stair->getPos().x == ec.getPos().x && stair->getPos().y == ec.getPos().y){
+                stair->setEnemy(nullptr);
+                stair->setType(CellType::stair);
+                stair->setState({ stair->getPos(), CellType::stair, "" });
+                stair->notifyObservers();
+            }
+        } else{
+            ec.setEnemy(nullptr);
+            ec.setType(CellType::tile);
+            ec.setState({ enemyPos, CellType::tile, "" });
+            ec.notifyObservers();
+        }
+        theFloor.at(newPos.x).at(newPos.y).setEnemy(e);
+        theFloor.at(newPos.x).at(newPos.y).setType(enemyType);
+        theFloor.at(newPos.x).at(newPos.y).setState({ newPos, enemyType, "" });
+        theFloor.at(newPos.x).at(newPos.y).notifyObservers();
     }
 }
+
+
 
 std::string navigation(Position dir){
 
 }
+
 void Floor::playerMove(Position dir){
     Cell dest = theFloor.at(dir.x).at(dir.y);
     State s = dest.getState();
@@ -452,11 +454,20 @@ void Floor::playerMove(Position dir){
 }
 
 void Floor::playerAttack(Position dir){
-
+    Cell& target = theFloor.at(dir.x).at(dir.y);
+    if ((target.getCellType() == CellType::vampire) || )
 }
 
 void Floor::playerUse(Position dir){
-
+    Cell useCell = theFloor.at(dir.x).at(dir.y);
+    if (useCell.getPerpotion() != nullptr){
+        useCell.getPerpotion()->use(player);
+    } else if (useCell.getTempotion() != nullptr){
+        useCell.getTempotion()->use(player);
+    } else{
+        throw Exception{};
+        return;
+    }
 }
 
 void Floor::goldnavigation(){
