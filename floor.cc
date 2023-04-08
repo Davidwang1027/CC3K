@@ -304,6 +304,9 @@ void Floor::init(Player*& player, int level){
         theFloor.at(enemyPos.x).at(enemyPos.y).setState(s);
         theFloor.at(enemyPos.x).at(enemyPos.y).notifyObservers();
         enemies.emplace_back(e);
+        if (i == 10) { //  <<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>
+            e->setCompass();
+        }
     }
 
     //Player generation
@@ -375,7 +378,7 @@ void Floor::enemyAction(){
 }
 
 std::string navigation(Position dir) {
-    
+
 }
 void Floor::playerMove(Position dir){
     Cell dest = theFloor.at(dir.x).at(dir.y);
@@ -386,10 +389,16 @@ void Floor::playerMove(Position dir){
         dest.setPlayer(player);
         dest.setType(CellType::player);
         std::string nv = navigation(dir);
-        dest.setState({ dir, CellType::player, navigation });
+        dest.setState({ dir, CellType::player, nv });
         dest.notifyObservers();
     } else if (s.type == CellType::compass) {
-
+        dest.setPlayer(player);
+        std::string display = "You picked up a compass.";
+        dest.setState({ dir, CellType::player, display});
+        stair->setType(CellType::stair);
+        stair->setState({ stair->getPos(), CellType::stair, "The stair appeared!"});
+        stair->notifyObservers();
+        dest.notifyObservers();
     } else if ((s.type == CellType::gold) && dest.getGold()->getIsProtected()) {
         dest.setPlayer(player);
         dest.getGold()->use(player);
@@ -408,6 +417,7 @@ void Floor::playerMove(Position dir){
         throw Exception{};
         return;
     }
+
 }
 
 bool Floor::isOnStair(){

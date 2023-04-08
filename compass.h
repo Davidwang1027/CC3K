@@ -4,9 +4,8 @@
 #include "item.h"
 
 class Compass : public Item{
-    Enemy* e;
 public:
-    Compass(Enemy* e) :Item{ false, "Compass" }, e{ e }{}
+    Compass() :Item{ false, "Compass" } {}
     void use(Player*& p){
         return;
     }

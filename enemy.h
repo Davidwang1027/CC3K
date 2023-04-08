@@ -5,10 +5,13 @@
 
 class Player;
 class Enemy : public Entity{
+    bool hasCompass = false;
 public:
     Enemy(std::string name, int hp, int atk, int def) : Entity(name, hp, atk, def){};
     virtual std::string attack(Player& whodefend);
     // virtual std::string dlcAttack(Player& whodefend) = 0;
+    bool getCompass() { return hasCompass; }
+    void setCompass() { hasCompass = true; }
 };
 
 #endif
