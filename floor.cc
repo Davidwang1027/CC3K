@@ -9,6 +9,7 @@
 #include "decorator.h"
 #include "goblin.h"
 #include "troll.h"
+#include "entity.h"
 #include "werewolf.h"
 #include "phoenix.h"
 #include "merchant.h"
@@ -420,15 +421,15 @@ std::string Floor::navigation(Position dir){
                 } else {
                     result += "and sees a pile of golds.";
                 }
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::suit) {
-                if ((theFloor.at(dir.x+i).at(dir.y+j).getSuit()->getIsProtected())) {
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::suit){
+                if ((theFloor.at(dir.x + i).at(dir.y + j).getSuit()->getIsProtected())){
                     result += "and sees a Barrier Suit protected by a dragon.";
-                } else {
+                } else{
                     result += "and sees a Barrier Suit.";
                 }
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::compass) {
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::compass){
                 result += "and sees a Compass.";
-            } 
+            }
         }
     }
     return result;
@@ -501,6 +502,9 @@ void Floor::playerAttack(Position dir){
         }
         theFloor.at(playerPos.x).at(playerPos.y).setState(s);
         theFloor.at(playerPos.x).at(playerPos.y).notifyObservers();
+    } else{
+        throw Exception{};
+        return;
     }
 }
 void Floor::playerUse(Position dir){
