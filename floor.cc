@@ -412,37 +412,37 @@ std::string Floor::navigation(Position dir){
     std::string result = "";
     for (int i = -1; i < 2; i++){
         for (int j = -1; j < 2; j++){
-            if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::goblin) {
-                result += "and sees a Goblin.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::vampire) {
-                result += "and sees a Vampire.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::troll) {
-                result += "and sees a Troll.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::dragon) {
-                result += "and sees a Dragon.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::werewolf) {
-                result += "and sees a Werewolf.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::merchant) {
-                result += "and sees a Merchant.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::phoenix) {
-                result += "and sees a Phoenix.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::potion) {
-                result += "and sees an unknown potion.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::gold) {
-                if ((theFloor.at(dir.x+i).at(dir.y+j).getGold()->getIsProtected())) {
-                    result += "and sees a dragon hoard.";
-                } else {
-                    result += "and sees a pile of golds.";
+            if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::goblin){
+                result += " and sees a Goblin.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::vampire){
+                result += " and sees a Vampire.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::troll){
+                result += " and sees a Troll.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::dragon){
+                result += " and sees a Dragon.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::werewolf){
+                result += " and sees a Werewolf.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::merchant){
+                result += " and sees a Merchant.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::phoenix){
+                result += " and sees a Phoenix.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::potion){
+                result += " and sees an unknown potion.";
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::gold){
+                if ((theFloor.at(dir.x + i).at(dir.y + j).getGold()->getIsProtected())){
+                    result += " and sees a dragon hoard.";
+                } else{
+                    result += " and sees a pile of golds.";
                 }
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::suit) {
-                if ((theFloor.at(dir.x+i).at(dir.y+j).getSuit()->getIsProtected())) {
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::suit){
+                if ((theFloor.at(dir.x + i).at(dir.y + j).getSuit()->getIsProtected())){
                     result += "and sees a Barrier Suit protected by a dragon.";
-                } else {
+                } else{
                     result += "and sees a Barrier Suit.";
                 }
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::compass) {
+            } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::compass){
                 result += "and sees a Compass.";
-            } 
+            }
         }
     }
     return result;
@@ -515,6 +515,9 @@ void Floor::playerAttack(Position dir){
         }
         theFloor.at(playerPos.x).at(playerPos.y).setState(s);
         theFloor.at(playerPos.x).at(playerPos.y).notifyObservers();
+    } else{
+        throw Exception{};
+        return;
     }
 }
 void Floor::playerUse(Position dir){
