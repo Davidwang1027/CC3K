@@ -17,7 +17,6 @@ void TextDisplay::notify(Subject<State>& whoNotified){
     CellType ct = s.type;
     size_t r = s.pos.x;
     size_t c = s.pos.y;
-    bool sv = s.stairVisible;
     switch (ct){
     case CellType::vWall:
         theDisplay[r][c] = '|';
@@ -35,11 +34,7 @@ void TextDisplay::notify(Subject<State>& whoNotified){
         theDisplay[r][c] = '.';
         break;
     case CellType::stair:
-        if (sv){
-            theDisplay[r][c] = '\\';
-        } else{
-            theDisplay[r][c] = '.';
-        }
+        theDisplay[r][c] = '\\';
         break;
     case CellType::empty:
         theDisplay[r][c] = ' ';
@@ -73,6 +68,9 @@ void TextDisplay::notify(Subject<State>& whoNotified){
         break;
     case CellType::merchant:
         theDisplay[r][c] = 'M';
+        break;
+    case CellType::werewolf:
+        theDisplay[r][c] = 'W';
         break;
     case CellType::phoenix:
         theDisplay[r][c] = 'X';

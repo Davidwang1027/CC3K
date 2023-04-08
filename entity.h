@@ -14,7 +14,7 @@ public:
     Entity(std::string name, int hp, int atk, int def) : name{ name }, hp{ hp }, atk{ atk }, def{ def }{};
     std::string getName(){ return name; };
     std::vector<Position> getDestinations() const{ return availableDestination; };
-    void setDestination(std::vector<Position> newDest){ this->availableDestination = newDest; };
+    void addDestination(Position newDest){ availableDestination.emplace_back(newDest); };
     virtual int getHp(){ return hp; };
     virtual int getAtk(){ return atk; };
     virtual int getDef(){ return def; };
