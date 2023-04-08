@@ -411,22 +411,9 @@ std::string Floor::navigation(Position dir){
     std::string result = "";
     for (int i = -1; i < 2; i++){
         for (int j = -1; j < 2; j++){
-            if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::goblin) {
-                result += "and sees a Goblin.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::vampire) {
-                result += "and sees a Vampire.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::troll) {
-                result += "and sees a Troll.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::dragon) {
-                result += "and sees a Dragon.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::werewolf) {
-                result += "and sees a Werewolf.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::merchant) {
-                result += "and sees a Merchant.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::phoenix) {
-                result += "and sees a Phoenix.";
-            } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::potion) {
-                result += "and sees an unknown potion.";
+            if (theFloor.at(dir.x+i).at(dir.y+j).getEnemy() != nullptr) {
+                result += " and sees a ";
+                result += (theFloor.at(dir.x+i).at(dir.y+j).getEnemy())->getName();
             } else if (theFloor.at(dir.x+i).at(dir.y+j).getCellType() == CellType::gold) {
                 if ((theFloor.at(dir.x+i).at(dir.y+j).getGold()->getIsProtected())) {
                     result += "and sees a dragon hoard.";
