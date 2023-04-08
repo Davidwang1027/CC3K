@@ -7,9 +7,9 @@
       "request": "launch",
       "args": [],
       "stopAtEntry": false,
-      "externalConsole": false,
-      "cwd": "/Users/davidwang/Library/CloudStorage/OneDrive-UniversityofWaterloo/Academic/2B/CS 246/CC3K",
-      "program": "/Users/davidwang/Library/CloudStorage/OneDrive-UniversityofWaterloo/Academic/2B/CS 246/CC3K/build/Debug/outDebug",
+      "externalConsole": true,
+      "cwd": "e:/Waterloo/Courses/Winter 2023/CS246/a5/CC3K",
+      "program": "e:/Waterloo/Courses/Winter 2023/CS246/a5/CC3K/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

@@ -456,7 +456,15 @@ void Floor::playerAttack(Position dir){
 }
 
 void Floor::playerUse(Position dir){
-
+    Cell useCell = theFloor.at(dir.x).at(dir.y);
+    if (useCell.getPerpotion() != nullptr) {
+        useCell.getPerpotion()->use(player);
+    } else if (useCell.getTempotion() != nullptr ) {
+        useCell.getTempotion()->use(player);
+    } else {
+        throw Exception{};
+        return;
+    }
 }
 
 
