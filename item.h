@@ -1,6 +1,5 @@
 #ifndef ITEM_H
 #define ITEM_H
-#include "cell.h"
 #include "player.h"
 class Item{
     bool isProtected = false;
