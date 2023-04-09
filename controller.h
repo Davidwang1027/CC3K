@@ -15,7 +15,7 @@ class Controller{
     int level;
     int suitLevel;
 public:
-    Controller();
+    Controller() = default;
     void setPlayer(std::string race);
     void playerMove(std::string direction);
     void useItem(std::string direction);

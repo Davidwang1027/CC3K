@@ -7,7 +7,7 @@
 #include <random>
 
 
-int ceiling(int num){
+int Enemy::ceiling(int num){
     if (num % 2 == 0){
         return num;
     } else{

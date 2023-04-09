@@ -2,7 +2,7 @@
 #define ITEM_H
 #include "player.h"
 class Item{
-    bool isProtected = false;
+    bool isProtected;
     std::string name;
 public:
     Item(bool isProtected = false, std::string name = "") : isProtected{ isProtected }, name{ name }{}

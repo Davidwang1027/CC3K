@@ -3,7 +3,6 @@
 #include "observer.h"
 #include <iostream>
 #include <vector>
-#include <iostream>
 #include "state.h"
 
 
