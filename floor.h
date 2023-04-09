@@ -7,6 +7,7 @@
 #include "item.h"
 #include "cell.h"
 #include "textdisplay.h"
+#include <random>
 #include "actiondisplay.h"
 #include "position.h"
 
@@ -18,6 +19,7 @@ class Floor{
     std::vector<Position> items;
     std::vector<Position> passages;
     std::vector<Position> doors;
+    std::default_random_engine rng;
     TextDisplay* td;
     ActionDisplay* ad;
     Cell* stair;
@@ -26,8 +28,15 @@ class Floor{
     Position playerPos;
     int level;
     int suitLevel;
+    int suitRandomGeneration();
+    int itemNumberRandomGeneration();
+    int chamberRandomGeneration(int shufflenumber);
+    Position randomPosition(std::vector<Position>& chamber);
+    CellType enemyRandomGeneration(int shufflenumber);
+    int randomGenerationBasedOnProbability(std::vector<int> p);
 public:
     Floor();
+    std::default_random_engine getRng() const{ return rng; }
     void mapGenerator(std::string filename);
     std::vector<std::vector<Position>> chamberConstruction();
     void enemyAction();
@@ -40,7 +49,7 @@ public:
     bool isWon();
     bool isLost();
     Player* getPlayer() const{ return player; }
-    void init(Player*& player, int level, int suitLevel);
+    void init(Player*& player, int level, int suitLevel, std::default_random_engine rng);
     std::string navigation(Position dir);
 
     Position getPlayerPos(){ return playerPos; }
