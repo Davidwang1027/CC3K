@@ -1,21 +1,16 @@
 #include "floor.h"
 #include "exception.h"
-#include "human.h"
-#include "dwarf.h"
-#include "elf.h"
-#include "orc.h"
+#include "controller.h"
 #include <iostream>
 
-int main(){
+int main(int argc, char *argv[]){   
+    Controller ctr;
     std::string cmd;
-    std::vector<Floor> floors;
-    Player *p;
     std::cout << "Please select your race (h, e, d, o) : ";
-
     try {
         std::cin >> cmd;
         if (cmd == "h") {
-            p = new Human();
+            ctr.setPlayer
         } else if (cmd == "e") {
             p = new Elf();
         } else if (cmd == "d") {
@@ -33,7 +28,12 @@ int main(){
         if (cmd == "q") {
             break;
         } else if (cmd == "r") {
-            
+
+        } else {
+
+        }
+        if (ctr.Won()) {
+
         }
     }
 }
