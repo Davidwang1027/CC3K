@@ -35,17 +35,14 @@ void erase(std::vector<Position>& v, Position p){
         }
     }
 }
-int Floor::suitRandomGeneration(){
+int Floor::suitRandomGeneration(int shufflenumber){
     std::vector<int> v = { 0, 1, 2, 3, 4 };
-    std::shuffle(v.begin(), v.end(), rng);
+    for (int i = 0; i < shufflenumber; i++){
+        std::shuffle(v.begin(), v.end(), rng);
+    }
     return *(v.begin());
 }
 
-int Floor::itemNumberRandomGeneration(){
-    std::vector<int> v = { 0, 1, 2 };
-    std::shuffle(v.begin(), v.end(), rng);
-    return *(v.begin());
-}
 
 int Floor::chamberRandomGeneration(int shufflenumber){
     std::vector<int> v = { 0, 1, 2, 3, 4 };
@@ -295,6 +292,7 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
     }
 
     // generate dragon 
+    int dragonNum = 0;
     for (int i = 0; i < items.size(); i++){
         Cell c = theFloor.at(items.at(i).x).at(items.at(i).y);
         if (c.getCellType() == CellType::gold && c.getGold()->getIsProtected()){
@@ -317,6 +315,7 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
             State dragonState = { dragonPos, CellType::dragon, "" };
             theFloor.at(dragonPos.x).at(dragonPos.y).setState(dragonState);
             theFloor.at(dragonPos.x).at(dragonPos.y).notifyObservers();
+            dragonNum++;
         } else if (c.getCellType() == CellType::suit && c.getSuit()->getIsProtected()) {
             Position suitPos = items.at(i);
             Suit *s = c.getSuit();
@@ -337,12 +336,13 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
             State dragonState = { dragonPos, CellType::dragon, "" };
             theFloor.at(dragonPos.x).at(dragonPos.y).setState(dragonState);
             theFloor.at(dragonPos.x).at(dragonPos.y).notifyObservers();
+            dragonNum++;
         }         
         
     }
         
         // generate enemies
-        for (int i = 0; i < 20; i++){
+        for (int i = 0; i < 20 - dragonNum; i++){
             chamberNum = chamberRandomGeneration(i);
             CellType enemy = enemyRandomGeneration(i);
             Position enemyPos = randomPosition(chambers.at(chamberNum),i);
@@ -366,7 +366,7 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
             theFloor.at(enemyPos.x).at(enemyPos.y).setState(s);
             theFloor.at(enemyPos.x).at(enemyPos.y).notifyObservers();
             enemies.emplace_back(enemyPos);
-            if (i == 10){ //  <<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>
+            if (i == 10){ // could be any number
                 e->setCompass();
             }
         }
@@ -403,7 +403,6 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
                 }
             }
             // Enemy move randomly
-            std::default_random_engine rng{seed};
             std::vector<Position> dest;
             for (int i = 0; i < e->getDestinations().size(); i++){
                 dest.emplace_back(e->getDestinations().at(i));

@@ -5,11 +5,14 @@
 #include "dwarf.h"
 #include "elf.h"
 #include "orc.h"
+#include <vector>
 class Controller{
     Player* player;
-    Floor* floor;
+    std::vector<Floor*> dungeon;
     Position dirToPos(std::string direction);
     bool isLost = false;
+    unsigned int seed;
+    int level;
 public:
     Controller();
     void setPlayer(std::string race);

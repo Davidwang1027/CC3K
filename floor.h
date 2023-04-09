@@ -28,8 +28,7 @@ class Floor{
     Position playerPos;
     int level;
     int suitLevel;
-    int suitRandomGeneration();
-    int itemNumberRandomGeneration();
+    int suitRandomGeneration(int shufflenumber);
     int chamberRandomGeneration(int shufflenumber);
     Position randomPosition(std::vector<Position>& chamber, int shufflenumber);
     CellType enemyRandomGeneration(int shufflenumber);
