@@ -11,8 +11,9 @@ class Controller{
     std::vector<Floor*> dungeon;
     Position dirToPos(std::string direction);
     bool isLost = false;
-    unsigned int seed;
+    std::vector<unsigned int> seeds;
     int level;
+    int suitLevel;
 public:
     Controller();
     void setPlayer(std::string race);

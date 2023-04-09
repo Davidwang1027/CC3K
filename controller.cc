@@ -1,4 +1,7 @@
 #include "controller.h"
+#include <chrono>
+#include <algorithm>
+#include <random>
 
 Position Controller::dirToPos(std::string direction){
     Position pos = dungeon.at(level)->getPlayerPos();
@@ -69,5 +72,27 @@ void Controller::playerAttack(std::string direction){
 }
 
 void Controller::initMap(){
-    
+    unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine rng{seed};
+    std::vector<int> s = {1,2,3,4,5};
+    std::shuffle(s.begin(), s.end(), rng);
+    suitLevel = s.at(0);
+    for (int i = 1; i < 6; i++) {
+        seed = std::chrono::system_clock::now().time_since_epoch().count();
+        std::default_random_engine rng{seed};
+        Floor *f = new Floor();
+        f->init(player,i,suitLevel,rng);
+        dungeon.emplace_back(f);
+    }
+}
+
+void Controller::restart() {
+
+    for (int i = 0; i < 5; i++) {
+        delete dungeon.at(i);
+        std::default_random_engine rng{seeds.at(i)};
+        Floor *f = new Floor();
+        f->init(player,i,suitLevel,rng);
+        dungeon.emplace_back(f);
+    }
 }
