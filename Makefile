@@ -1,18 +1,12 @@
-CXX = g++
-CXXFLAGS = -std=c++14 -g -Wall -MMD -Werror=vla
-
+CXX=g++
+CXXFLAGS=-std=c++14 -Wall -MMD -g -Werror=vla
 SRC = $(wildcard *.cc)
-
 OBJECTS = $(SRC:.c=.o)
-
-DEPENDS = ${OBJECTS:.o=.d}
-EXEC = myProg
-
-${EXEC} : ${OBJECTS}
+DEPENDS=${OBJECTS:.o=.d} 
+EXEC=myProgram
+${EXEC}:${OBJECTS}
 	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC}
-
-.PHONY : clean
-clean :
-	rm ${DEPENDS} ${OBJECTS} ${EXEC}
-
--include ${DEPENDS} # reads the .d files and reruns dependencies
+-include ${DEPENDS}
+.PHONY: clean
+clean:
+	rm ${OBJECTS} ${DEPENDS} ${EXEC}
