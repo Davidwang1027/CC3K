@@ -4,7 +4,7 @@
 class Werewolf : public Enemy{
 public:
     Werewolf() : Enemy("Werewolf", 120, 30, 5){};
-    std::string dlcAttack(Player& whodefend) override;
+    // std::string dlcAttack(Player& whodefend) override;
 };
 
 #endif
