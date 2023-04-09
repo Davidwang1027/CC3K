@@ -35,33 +35,27 @@ void erase(std::vector<Position>& v, Position p){
         }
     }
 }
-int suitRandomGeneration(){
+int Floor::suitRandomGeneration(){
     std::vector<int> v = { 0, 1, 2, 3, 4 };
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine rng{seed};
     std::shuffle(v.begin(), v.end(), rng);
     return *(v.begin());
 }
 
-int itemNumberRandomGeneration(){
+int Floor::itemNumberRandomGeneration(){
     std::vector<int> v = { 0, 1, 2 };
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine rng{seed};
     std::shuffle(v.begin(), v.end(), rng);
     return *(v.begin());
 }
 
-int chamberRandomGeneration(){
+int Floor::chamberRandomGeneration(int shufflenumber){
     std::vector<int> v = { 0, 1, 2, 3, 4 };
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine rng{seed};
-    std::shuffle(v.begin(), v.end(), rng);
+    for (int i = 0; i < shufflenumber; i++){
+        std::shuffle(v.begin(), v.end(), rng);
+    }
     return *(v.begin());
 }
 
-Position randomPosition(std::vector<Position>& chamber){
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine rng{seed};
+Position Floor::randomPosition(std::vector<Position>& chamber){
     std::shuffle(chamber.begin(), chamber.end(), rng);
     Position p = *(chamber.begin());
     chamber.erase(chamber.begin());
@@ -124,25 +118,18 @@ std::vector<std::vector<Position>> Floor::chamberConstruction(){
     }
     return { chamber1, chamber2, chamber3, chamber4, chamber5 };
 }
-CellType enemyRandomGeneration(){
+CellType Floor::enemyRandomGeneration(int shufflenumber){
     std::vector<CellType> v = { CellType::vampire, CellType::vampire, CellType::vampire, CellType::werewolf,
     CellType::werewolf, CellType::werewolf, CellType::werewolf, CellType::goblin, CellType::goblin, CellType::goblin,
     CellType::goblin, CellType::goblin, CellType::troll, CellType::troll, CellType::phoenix, CellType::phoenix,
     CellType::merchant, CellType::merchant };
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine rng{seed};
-    std::shuffle(v.begin(), v.end(), rng);
-    return *(v.begin());
-
-}
-
-CellType itemRandomGeneration(){
-    std::vector<CellType> v = { CellType::potion, CellType::gold, CellType::gold, CellType::gold, CellType::gold };
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine rng{seed};
-    std::shuffle(v.begin(), v.end(), rng);
+    for (int i = 0; i < shufflenumber; i++){
+        std::shuffle(v.begin(), v.end(), rng);
+    }
     return *(v.begin());
 }
+
+
 
 std::ostream& operator<<(std::ostream& out, const Floor& f){
     out << *(f.td);
@@ -195,7 +182,7 @@ void Floor::mapGenerator(std::string filename){
     }
 }
 
-int randomGenerationBasedOnProbability(std::vector<int> p){
+int Floor::randomGenerationBasedOnProbability(std::vector<int> p){
     std::vector<int> tmp;
     int k = 0;
     for (int i = 0; i < p.size(); i++){
@@ -204,24 +191,39 @@ int randomGenerationBasedOnProbability(std::vector<int> p){
         }
         k++;
     }
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine rng{seed};
     std::shuffle(tmp.begin(), tmp.end(), rng);
     return tmp.at(0);
 }
 
 // Todo: generate suit
-void Floor::init(Player*& player, int level, int suitLevel){
+void Floor::init(Player*& player, int level, int suitLevel, unsigned int seed){
     this->player = player;
     this->level = level;
+    this->seed = seed;
     td = new TextDisplay(25, 79);
     ad = new ActionDisplay();
     mapGenerator("map.txt");
-
     std::vector<std::vector<Position>> chambers = chamberConstruction();
+
+
+    //Player generation
+    int chamberNum = chamberRandomGeneration(1);
+    playerPos = randomPosition(chambers.at(chamberNum));
+    this->player = player;
+    theFloor.at(playerPos.x).at(playerPos.y).setType(CellType::player);
+    theFloor.at(playerPos.x).at(playerPos.y).setPlayer(player);
+    std::string message = player->getName() + " has spawned.";
+    State s = { playerPos, CellType::player, message };
+    theFloor.at(playerPos.x).at(playerPos.y).setState(s);
+    theFloor.at(playerPos.x).at(playerPos.y).notifyObservers();
+
+
+
+
     // generate suit if suitLevel matches level
     if (suitLevel == level){
-        int chamberNum = chamberRandomGeneration();
+        int chamberNum = chamberRandomGeneration(2);
         Position suitPos = randomPosition(chambers.at(chamberNum));
         // Generate suit
         Suit* s = new Suit(true, Position{ 114, 514 });
@@ -351,16 +353,7 @@ void Floor::init(Player*& player, int level, int suitLevel){
         }
     }
 
-    //Player generation
-    int chamberNum = chamberRandomGeneration();
-    playerPos = randomPosition(chambers.at(chamberNum));
-    this->player = player;
-    theFloor.at(playerPos.x).at(playerPos.y).setType(CellType::player);
-    theFloor.at(playerPos.x).at(playerPos.y).setPlayer(player);
-    std::string message = player->getName() + " has spawned.";
-    State s = { playerPos, CellType::player, message };
-    theFloor.at(playerPos.x).at(playerPos.y).setState(s);
-    theFloor.at(playerPos.x).at(playerPos.y).notifyObservers();
+
 
 }
 
@@ -392,7 +385,6 @@ void Floor::enemyAction(){
             }
         }
         // Enemy move randomly
-        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
         std::default_random_engine rng{seed};
         std::vector<Position> dest;
         for (int i = 0; i < e->getDestinations().size(); i++){
