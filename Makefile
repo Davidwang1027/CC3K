@@ -1,7 +1,6 @@
 CXX=g++
 CXXFLAGS=-std=c++14 -Wall -MMD -g -Werror=vla
-SRC = $(wildcard *.cc)
-OBJECTS = $(SRC:.c=.o)
+OBJECTS=actiondisplay.o ba.o bd.o controller.o enemy.o floor.o main.o perpotion.o player.o textdisplay.o wa.o wd.o 
 DEPENDS=${OBJECTS:.o=.d} 
 EXEC=myProgram
 ${EXEC}:${OBJECTS}
