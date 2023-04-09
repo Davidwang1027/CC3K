@@ -31,9 +31,9 @@ class Floor{
     int suitRandomGeneration();
     int itemNumberRandomGeneration();
     int chamberRandomGeneration(int shufflenumber);
-    Position randomPosition(std::vector<Position>& chamber);
+    Position randomPosition(std::vector<Position>& chamber, int shufflenumber);
     CellType enemyRandomGeneration(int shufflenumber);
-    int randomGenerationBasedOnProbability(std::vector<int> p);
+    int randomGenerationBasedOnProbability(std::vector<int> p, int shufflenumber);
 public:
     Floor();
     std::default_random_engine getRng() const{ return rng; }
