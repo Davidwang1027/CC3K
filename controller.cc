@@ -71,7 +71,8 @@ void Controller::playerAttack(std::string direction){
     std::cout << *(dungeon.at(level));
 }
 
-void Controller::initMap(){
+void Controller::initMap(std::string race){
+    setPlayer(race);
     unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine rng{seed};
     std::vector<int> s = {1,2,3,4,5};
@@ -86,8 +87,9 @@ void Controller::initMap(){
     }
 }
 
-void Controller::restart() {
-
+void Controller::restart(std::string race) {
+    delete player;
+    setPlayer(race);
     for (int i = 0; i < 5; i++) {
         delete dungeon.at(i);
         std::default_random_engine rng{seeds.at(i)};

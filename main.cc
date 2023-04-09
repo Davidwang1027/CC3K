@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
         } else if (cmd == "q"){
             return;          
         } else {
-            ctr.setPlayer(cmd);
+            ctr.initMap(cmd);
         }            
     } catch (Exception) {
         std::cout << "Invalid Input" << std::endl;
@@ -24,7 +24,17 @@ int main(int argc, char *argv[]){
         if (cmd == "q") {
             break;
         } else if (cmd == "r") {
-            
+            std::cout << "\nPlease select your race (h, e, d, o) or quit (q) : ";
+            try {
+                std::cin >> cmd;
+                if (cmd != "h" && cmd != "e" && cmd != "d" && cmd != "o"){
+                    throw Exception{};
+                } else {
+                    ctr.restart(cmd);
+                }            
+            } catch (Exception) {
+                 std::cout << "Invalid Input" << std::endl;
+            }
         } else if (cmd == "a") {
             std::cin >> cmd;
             ctr.playerAttack(cmd);

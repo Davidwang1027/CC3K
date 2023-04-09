@@ -20,10 +20,9 @@ public:
     void playerMove(std::string direction);
     void useItem(std::string direction);
     void playerAttack(std::string direction);
-    void initMap();
-    void restart();
+    void initMap(std::string race);
+    void restart(std::string race);
     void quit();
-    void displayAction();
     bool getIsLost(){ return isLost; }
 };
 
