@@ -199,7 +199,7 @@ int Floor::randomGenerationBasedOnProbability(std::vector<int> p, int shufflenum
     return tmp.at(0);
 }
 
-// Todo: generate suit
+
 void Floor::init(Player*& player, int level, int suitLevel, std::default_random_engine rng){
     this->player = player;
     this->level = level;
@@ -212,7 +212,7 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
 
     // Player generation
     int chamberNum = chamberRandomGeneration(1);
-    playerPos = randomPosition(chambers.at(chamberNum));
+    playerPos = randomPosition(chambers.at(chamberNum), 1);
     this->player = player;
     theFloor.at(playerPos.x).at(playerPos.y).setType(CellType::player);
     theFloor.at(playerPos.x).at(playerPos.y).setPlayer(player);
@@ -223,13 +223,13 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
 
     // Stair generation
     chamberNum = chamberRandomGeneration(2);
-    Position stairPos = randomPosition(chambers.at(chamberNum));
+    Position stairPos = randomPosition(chambers.at(chamberNum), 1);
     stair = &(theFloor.at(stairPos.x).at(stairPos.y));
 
     // Generate potion
     for (int i = 0; i < 10; i++){
         chamberNum = chamberRandomGeneration(i);
-        Position potionPos = randomPosition(chambers.at(chamberNum));
+        Position potionPos = randomPosition(chambers.at(chamberNum),i);
         int potionType = randomGenerationBasedOnProbability({ 1, 1, 1, 1, 1, 1 }, i); // 1 RH, 1 BA, 1 BD, 1 PH, 1 WA, 1 WD
         if (potionType == 0 || potionType == 1 || potionType == 2 || potionType == 3){
             Tempotion* p = nullptr;
@@ -291,30 +291,15 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
         State suitState = { suitPos, CellType::suit, "" };
         items.emplace_back(suitPos);
 
-        // Generate dragon, could be improved by helper function
-        Dragon<Suit>* d = new Dragon<Suit>(s);
-        std::vector<Position> availablePos;
-        for (int i = -1; i < 2; i++){
-            for (int j = -1; j < 2; j++){
-                if (theFloor.at(suitPos.x + i).at(suitPos.y + j).getCellType() == CellType::tile){
-                    availablePos.emplace_back(Position{ suitPos.x + i, suitPos.y + j });
-                }
-            }
-        }
-        Position dragonPos = randomPosition(availablePos, 10);
-        theFloor.at(suitPos.x).at(suitPos.y).getSuit()->setdp(dragonPos);
-        erase(chambers[chamberNum], dragonPos);
-        theFloor.at(dragonPos.x).at(dragonPos.y).setType(CellType::dragon);
-        theFloor.at(dragonPos.x).at(dragonPos.y).setEnemy(d);
-        State dragonState = { dragonPos, CellType::dragon, "" };
-        theFloor.at(dragonPos.x).at(dragonPos.y).setState(dragonState);
-        theFloor.at(dragonPos.x).at(dragonPos.y).notifyObservers();
+        
     }
 
     // generate dragon 
     for (int i = 0; i < items.size(); i++){
         Cell c = theFloor.at(items.at(i).x).at(items.at(i).y);
-        if (c.getGold() != nullptr && ()){
+        if (c.getCellType() == CellType::gold && c.getGold()->getIsProtected()){
+            Position goldPos = items.at(i);
+            Gold *g = c.getGold();
             Dragon<Gold>* d = new Dragon<Gold>(g);
             std::vector<Position> availablePos;
             for (int i = -1; i < 2; i++){
@@ -332,13 +317,35 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
             State dragonState = { dragonPos, CellType::dragon, "" };
             theFloor.at(dragonPos.x).at(dragonPos.y).setState(dragonState);
             theFloor.at(dragonPos.x).at(dragonPos.y).notifyObservers();
-        }
-
+        } else if (c.getCellType() == CellType::suit && c.getSuit()->getIsProtected()) {
+            Position suitPos = items.at(i);
+            Suit *s = c.getSuit();
+            Dragon<Suit>* d = new Dragon<Suit>(s);            
+            std::vector<Position> availablePos;
+            for (int i = -1; i < 2; i++){
+                for (int j = -1; j < 2; j++){
+                    if (theFloor.at(suitPos.x + i).at(suitPos.y + j).getCellType() == CellType::tile){
+                        availablePos.emplace_back(Position{ suitPos.x + i, suitPos.y + j });
+                    }
+                }
+            }
+            Position dragonPos = randomPosition(availablePos, 10);
+            theFloor.at(suitPos.x).at(suitPos.y).getSuit()->setdp(dragonPos);
+            erase(chambers[chamberNum], dragonPos);
+            theFloor.at(dragonPos.x).at(dragonPos.y).setType(CellType::dragon);
+            theFloor.at(dragonPos.x).at(dragonPos.y).setEnemy(d);
+            State dragonState = { dragonPos, CellType::dragon, "" };
+            theFloor.at(dragonPos.x).at(dragonPos.y).setState(dragonState);
+            theFloor.at(dragonPos.x).at(dragonPos.y).notifyObservers();
+        }         
+        
+    }
+        
         // generate enemies
         for (int i = 0; i < 20; i++){
-            int chamberNum = chamberRandomGeneration();
-            CellType enemy = enemyRandomGeneration();
-            Position enemyPos = randomPosition(chambers.at(chamberNum));
+            chamberNum = chamberRandomGeneration(i);
+            CellType enemy = enemyRandomGeneration(i);
+            Position enemyPos = randomPosition(chambers.at(chamberNum),i);
             Enemy* e;
             if (enemy == CellType::vampire){
                 e = new Vampire();
