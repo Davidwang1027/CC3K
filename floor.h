@@ -37,8 +37,13 @@ public:
     void goldnavigation();
     void suitnavigation();
     bool isOnStair();
+    bool isWon();
+    bool isLost();
+    Player* getPlayer() const{ return player; }
     void init(Player*& player, int level, int suitLevel);
-    std::string Floor::navigation(Position dir);
+    std::string navigation(Position dir);
+
+    Position getPlayerPos(){ return playerPos; }
     friend std::ostream& operator<<(std::ostream& out, const Floor& f);
     ~Floor();
 };
