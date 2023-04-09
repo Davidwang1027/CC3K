@@ -34,7 +34,7 @@ class Floor{
     CellType enemyRandomGeneration(int shufflenumber);
     int randomGenerationBasedOnProbability(std::vector<int> p, int shufflenumber);
 public:
-    Floor();
+    Floor() = default;
     std::default_random_engine getRng() const{ return rng; }
     void mapGenerator(std::string filename);
     std::vector<std::vector<Position>> chamberConstruction();

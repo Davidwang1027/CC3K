@@ -5,6 +5,7 @@
 
 class Player;
 class Enemy : public Entity{
+    int ceiling(int num);
     bool hasCompass = false;
 public:
     Enemy(std::string name, int hp, int atk, int def) : Entity(name, hp, atk, def){};

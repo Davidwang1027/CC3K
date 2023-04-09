@@ -33,11 +33,11 @@ Position Controller::dirToPos(std::string direction){
 void Controller::setPlayer(std::string race){
     if (race == "h"){
         player = new Human();
-    } else if (race == "e") {
+    } else if (race == "e"){
         player = new Elf();
-    } else if (race == "d") {
+    } else if (race == "d"){
         player = new Dwarf();
-    } else if (race == "o") {
+    } else if (race == "o"){
         player = new Orc();
     }
 }
@@ -75,26 +75,29 @@ void Controller::initMap(std::string race){
     setPlayer(race);
     unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine rng{seed};
-    std::vector<int> s = {1,2,3,4,5};
+    std::vector<int> s = { 1,2,3,4,5 };
     std::shuffle(s.begin(), s.end(), rng);
     suitLevel = s.at(0);
-    for (int i = 1; i < 6; i++) {
+    for (int i = 1; i < 6; i++){
         seed = std::chrono::system_clock::now().time_since_epoch().count();
         std::default_random_engine rng{seed};
-        Floor *f = new Floor();
-        f->init(player,i,suitLevel,rng);
+        Floor* f = new Floor();
+        // std::cout << "aaa" << std::endl;
+
+        f->init(player, i, suitLevel, rng);
+        // std::cout << "HHHHHHHHHHHHHSIDFBIDBCISBDFIHIOHEONODBFOABOF" << std::endl;
         dungeon.emplace_back(f);
     }
 }
 
-void Controller::restart(std::string race) {
+void Controller::restart(std::string race){
     delete player;
     setPlayer(race);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; i++){
         delete dungeon.at(i);
         std::default_random_engine rng{seeds.at(i)};
-        Floor *f = new Floor();
-        f->init(player,i,suitLevel,rng);
+        Floor* f = new Floor();
+        f->init(player, i + 1, suitLevel, rng);
         dungeon.emplace_back(f);
     }
 }
