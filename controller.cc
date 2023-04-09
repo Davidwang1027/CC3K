@@ -63,5 +63,5 @@ void Controller::playerAttack(std::string direction){
 }
 
 void Controller::initMap(){
-
+    
 }
