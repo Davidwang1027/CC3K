@@ -30,6 +30,12 @@ Position Controller::dirToPos(std::string direction){
 void Controller::setPlayer(std::string race){
     if (race == "h"){
         player = new Human();
+    } else if (race == "e") {
+        player = new Elf();
+    } else if (race == "d") {
+        player = new Dwarf();
+    } else if (race == "o") {
+        player = new Orc();
     }
 }
 
