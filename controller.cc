@@ -1,7 +1,7 @@
 #include "controller.h"
 
 Position Controller::dirToPos(std::string direction){
-    Position pos = floor->getPlayerPos();
+    Position pos = dungeon.at(level)->getPlayerPos();
     if (direction == "no"){
         pos.y--;
     } else if (direction == "so"){
@@ -35,31 +35,31 @@ void Controller::setPlayer(std::string race){
 
 void Controller::playerMove(std::string direction){
     Position pos = dirToPos(direction);
-    floor->playerMove(pos);
-    floor->goldnavigation();
-    floor->suitnavigation();
-    floor->enemyAction();
-    isLost = floor->isLost();
-    std::cout << *floor;
-    if (floor->isWon()){
+    dungeon.at(level)->playerMove(pos);
+    dungeon.at(level)->goldnavigation();
+    dungeon.at(level)->suitnavigation();
+    dungeon.at(level)->enemyAction();
+    isLost = dungeon.at(level)->isLost();
+    std::cout << *dungeon.at(level);
+    if (dungeon.at(level)->isWon()){
         std::cout << "You win!" << std::endl;
     };
 }
 
 void Controller::useItem(std::string direction){
     Position pos = dirToPos(direction);
-    floor->playerUse(pos);
-    floor->enemyAction();
-    isLost = floor->isLost();
-    std::cout << *floor;
+    dungeon.at(level)->playerUse(pos);
+    dungeon.at(level)->enemyAction();
+    isLost = dungeon.at(level)->isLost();
+    std::cout << *(dungeon.at(level));
 }
 
 void Controller::playerAttack(std::string direction){
     Position pos = dirToPos(direction);
-    floor->playerAttack(pos);
-    floor->enemyAction();
-    isLost = floor->isLost();
-    std::cout << *floor;
+    dungeon.at(level)->playerAttack(pos);
+    dungeon.at(level)->enemyAction();
+    isLost = dungeon.at(level)->isLost();
+    std::cout << *(dungeon.at(level));
 }
 
 void Controller::initMap(){
