@@ -1,7 +1,6 @@
 #ifndef BA_H
 #define BA_H
 #include "tempotion.h"
-#include "player.h"
 class BA : public Tempotion{
 public:
     BA(Player* component) : Tempotion{ component }{}
