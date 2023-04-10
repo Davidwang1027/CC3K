@@ -5,15 +5,7 @@
 #include <algorithm>
 #include <chrono>
 #include <random>
-
-
-int Enemy::ceiling(int num){
-    if (num % 2 == 0){
-        return num;
-    } else{
-        return num + 1;
-    }
-}
+#include <cmath>
 
 bool miss(){
     std::vector<int> v = { 0,1 };
@@ -28,11 +20,11 @@ bool miss(){
 
 std::string Enemy::attack(Player& whodefend){
     if (!miss()){
-        int damage = ceiling((100 / (100 + whodefend.getDef())) * this->getAtk());
+        int damage = ceil((100 / (100 + whodefend.getDef())) * this->getAtk());
         if (whodefend.getSuit()){
             damage /= 2;
         }
-        whodefend.setHp(this->getHp() - damage);
+        whodefend.setHp(whodefend.getHp() - damage);
         std::string result = this->getName() + " deals " + std::to_string(damage) + " damage to " + whodefend.getName() + ".";
         if (whodefend.getHp() <= 0){
             whodefend.setDead();

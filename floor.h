@@ -41,7 +41,7 @@ public:
     void enemyAction();
     void playerMove(Position dir);
     void playerAttack(Position dir);
-    void playerUse(Position dir);
+    bool playerUse(Position dir);
     void goldnavigation();
     void suitnavigation();
     bool isOnStair();
@@ -49,6 +49,7 @@ public:
     bool isLost();
     Player* getPlayer() const{ return player; }
     void init(Player*& player, int level, int suitLevel, std::default_random_engine rng);
+    void init(Player*& player, int level, int suitLevel, std::default_random_engine rng, const std::string filename);
     std::string navigation(Position dir);
 
     Position getPlayerPos(){ return playerPos; }

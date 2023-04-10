@@ -1,4 +1,5 @@
 #include "floor.h"
+#include <iomanip>
 #include <iostream>
 #include <fstream>
 #include <chrono>
@@ -137,12 +138,16 @@ std::ostream& operator<<(std::ostream& out, const Floor& f){
     out << *(f.td);
     Player* p = f.getPlayer();
     // Player info
-    out << "Race: " << p->getName() << " Gold: " << p->getGold() << std::endl;
-    out << "HP: " << p->getHp() << std::endl;
+    out << "Race: " << p->getName() << " Gold: " << p->getGold() << std::right << std::setw(60) << std::setfill(' ') << "Floor " << f.level << std::endl;
+    if (p->getHp() < 0){
+        out << "HP: 0" << std::endl;
+    } else{
+        out << "HP: " << p->getHp() << std::endl;
+    }
     out << "Atk: " << p->getAtk() << std::endl;
-    out << "Def: " << p->getDef() << std::endl;
+    out << "Def: " << ceil(p->getDef()) << std::endl;
     out << "Action: " << *(f.ad);
-    f.ad->clear();
+    (f.ad)->clear();
     return out;
 }
 
@@ -151,35 +156,112 @@ void Floor::mapGenerator(std::string filename){
     std::ifstream file {filename};
     std::string line;
     size_t row = 0;
-    while (getline(file, line)){
+
+    for (size_t i = 0; i < 25; i++){
         std::vector<Cell> temp;
-        for (size_t i = 0; i < line.length(); i++){
+        for (size_t j = 0; j < 79; j++){
             Cell cell;
             cell.attach(td);
             cell.attach(ad);
-            char c = line[i];
-            if (c == '|'){
-                cell.setType(CellType::vWall);
-            } else if (c == '-'){
-                cell.setType(CellType::hWall);
-            } else if (c == '+'){
-                cell.setType(CellType::door);
-                doors.emplace_back(Position{ row,i });
-            } else if (c == '#'){
-                cell.setType(CellType::passage);
-                Position p = { row,i };
-                passages.emplace_back(p);
-            } else if (c == '.'){
-                cell.setType(CellType::tile);
-            } else if (c == ' '){
-                cell.setType(CellType::empty);
-            } else if (c == '\\'){
-                cell.setType(CellType::stair);
-            }
-            cell.setPos({ row, i });
             temp.emplace_back(cell);
         }
         theFloor.emplace_back(temp);
+    }
+
+    while (getline(file, line)){
+        for (size_t i = 0; i < line.length(); i++){
+            Cell& cell = theFloor.at(row).at(i);
+            char c = line[i];
+            Position p = { row, i };
+            State s;
+            if (c == '|'){
+                cell.setType(CellType::vWall);
+                s = { p, CellType::vWall, "" };
+            } else if (c == '-'){
+                cell.setType(CellType::hWall);
+                s = { p, CellType::hWall, "" };
+            } else if (c == '+'){
+                cell.setType(CellType::door);
+                doors.emplace_back(Position{ row,i });
+                s = { p, CellType::door, "" };
+            } else if (c == '#'){
+                cell.setType(CellType::passage);
+                passages.emplace_back(p);
+                s = { p, CellType::passage, "" };
+            } else if (c == '.'){
+                cell.setType(CellType::tile);
+                s = { p, CellType::tile, "" };
+            } else if (c == ' '){
+                cell.setType(CellType::empty);
+                s = { p, CellType::empty, "" };
+            } else if (c == '\\'){
+                cell.setType(CellType::stair);
+                s = { p, CellType::stair, "" };
+            } else if (c == '0'){
+                cell.setType(CellType::potion);
+                Perpotion* rh = new RH();
+                cell.setPerpotion(rh);
+                s = { p, CellType::potion, "" };
+                items.emplace_back(p);
+            } else if (c == '1'){
+                cell.setType(CellType::potion);
+                Tempotion* ba = new BA(nullptr);
+                cell.setTempotion(ba);
+                s = { p, CellType::potion, "" };
+                items.emplace_back(p);
+            } else if (c == '2'){
+                cell.setType(CellType::potion);
+                Tempotion* bd = new BD(nullptr);
+                cell.setTempotion(bd);
+                s = { p, CellType::potion, "" };
+                items.emplace_back(p);
+            } else if (c == '3'){
+                cell.setType(CellType::potion);
+                Perpotion* ph = new PH();
+                cell.setPerpotion(ph);
+                s = { p, CellType::potion, "" };
+                items.emplace_back(p);
+            } else if (c == '4'){
+                cell.setType(CellType::potion);
+                Tempotion* wa = new WA(nullptr);
+                cell.setTempotion(wa);
+                s = { p, CellType::potion, "" };
+                items.emplace_back(p);
+            } else if (c == '5'){
+                cell.setType(CellType::potion);
+                Tempotion* wd = new WD(nullptr);
+                cell.setTempotion(wd);
+                s = { p, CellType::potion, "" };
+                items.emplace_back(p);
+            } else if (c == '6'){
+                cell.setType(CellType::gold);
+                Gold* g = new Gold(1, false, p);
+                cell.setGold(g);
+                s = { p, CellType::gold, "" };
+                items.emplace_back(p);
+            } else if (c == '7'){
+                cell.setType(CellType::gold);
+                Gold* g = new Gold(2, false, p);
+                cell.setGold(g);
+                s = { p, CellType::gold, "" };
+                items.emplace_back(p);
+            } else if (c == '8'){
+                cell.setType(CellType::gold);
+                Gold* g = new Gold(4, false, p);
+                cell.setGold(g);
+                s = { p, CellType::gold, "" };
+                items.emplace_back(p);
+            } else if (c == '9'){
+                cell.setType(CellType::gold);
+                Gold* g = new Gold(6, true, p);
+                cell.setGold(g);
+                s = { p, CellType::gold, "" };
+                items.emplace_back(p);
+            }
+            cell.setPos({ row, i });
+            cell.setState(s);
+            cell.notifyObservers();
+        }
         row++;
     }
 }
@@ -214,6 +296,7 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
     int chamberNum = chamberRandomGeneration(1);
     playerPos = randomPosition(chambers.at(chamberNum), 1);
     this->player = player;
+    erase(chambers.at(chamberNum), playerPos);
     theFloor.at(playerPos.x).at(playerPos.y).setType(CellType::player);
     theFloor.at(playerPos.x).at(playerPos.y).setPlayer(player);
     std::string message = player->getName() + " has spawned.";
@@ -221,10 +304,12 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
     theFloor.at(playerPos.x).at(playerPos.y).setState(s);
     theFloor.at(playerPos.x).at(playerPos.y).notifyObservers();
 
+
     // Stair generation
     chamberNum = chamberRandomGeneration(2);
     Position stairPos = randomPosition(chambers.at(chamberNum), 1);
     stair = &(theFloor.at(stairPos.x).at(stairPos.y));
+
 
     // Generate potion
     for (int i = 0; i < 10; i++){
@@ -275,9 +360,12 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
             g = new Gold(6, true, Position{ 114, 514 });
         }
         theFloor.at(goldPos.x).at(goldPos.y).setGold(g);
+        items.emplace_back(goldPos);
         State goldState = { goldPos, CellType::gold, "" };
         theFloor.at(goldPos.x).at(goldPos.y).setState(goldState);
-        items.emplace_back(goldPos);
+        theFloor.at(goldPos.x).at(goldPos.y).setType(CellType::gold);
+        theFloor.at(goldPos.x).at(goldPos.y).notifyObservers();
+
     }
 
 
@@ -289,43 +377,53 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
         Suit* s = new Suit(true, Position{ 114, 514 });
         theFloor.at(suitPos.x).at(suitPos.y).setType(CellType::suit);
         State suitState = { suitPos, CellType::suit, "" };
+        theFloor.at(suitPos.x).at(suitPos.y).setState(suitState);
+        theFloor.at(suitPos.x).at(suitPos.y).setSuit(s);
+        theFloor.at(suitPos.x).at(suitPos.y).notifyObservers();
         items.emplace_back(suitPos);
     }
 
     // generate dragon 
     int dragonNum = 0;
     for (int i = 0; i < items.size(); i++){
-        Cell c = theFloor.at(items.at(i).x).at(items.at(i).y);
+        Cell& c = theFloor.at(items.at(i).x).at(items.at(i).y);
         if (c.getCellType() == CellType::gold && c.getGold()->getIsProtected()){
             Position goldPos = items.at(i);
             Gold* g = c.getGold();
             Dragon<Gold>* d = new Dragon<Gold>(g);
             std::vector<Position> availablePos;
-            for (int i = -1; i < 2; i++){
+            for (int k = -1; k < 2; k++){
                 for (int j = -1; j < 2; j++){
-                    if (theFloor.at(goldPos.x + i).at(goldPos.y + j).getCellType() == CellType::tile){
-                        availablePos.emplace_back(Position{ goldPos.x + i, goldPos.y + j });
+                    if (theFloor.at(goldPos.x + k).at(goldPos.y + j).getCellType() == CellType::tile){
+                        availablePos.emplace_back(Position{ goldPos.x + k, goldPos.y + j });
                     }
                 }
             }
             Position dragonPos = randomPosition(availablePos, i);
             theFloor.at(goldPos.x).at(goldPos.y).getGold()->setdp(dragonPos);
-            erase(chambers[i], dragonPos);
+            for (int k = 0; k < 5; k++){
+                for (int j = 0; j < chambers.at(k).size(); j++){
+                    if ((chambers.at(k).at(j).x == dragonPos.x) && (chambers.at(k).at(j).y == dragonPos.y)){
+                        chambers.at(k).erase(chambers.at(k).begin() + j);
+                    }
+                }
+            }
             theFloor.at(dragonPos.x).at(dragonPos.y).setType(CellType::dragon);
             theFloor.at(dragonPos.x).at(dragonPos.y).setEnemy(d);
             State dragonState = { dragonPos, CellType::dragon, "" };
             theFloor.at(dragonPos.x).at(dragonPos.y).setState(dragonState);
             theFloor.at(dragonPos.x).at(dragonPos.y).notifyObservers();
+            enemies.emplace_back(dragonPos);
             dragonNum++;
         } else if (c.getCellType() == CellType::suit && c.getSuit()->getIsProtected()){
             Position suitPos = items.at(i);
             Suit* s = c.getSuit();
             Dragon<Suit>* d = new Dragon<Suit>(s);
             std::vector<Position> availablePos;
-            for (int i = -1; i < 2; i++){
+            for (int k = -1; k < 2; k++){
                 for (int j = -1; j < 2; j++){
-                    if (theFloor.at(suitPos.x + i).at(suitPos.y + j).getCellType() == CellType::tile){
-                        availablePos.emplace_back(Position{ suitPos.x + i, suitPos.y + j });
+                    if (theFloor.at(suitPos.x + k).at(suitPos.y + k).getCellType() == CellType::tile){
+                        availablePos.emplace_back(Position{ suitPos.x + k, suitPos.y + j });
                     }
                 }
             }
@@ -337,6 +435,7 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
             State dragonState = { dragonPos, CellType::dragon, "" };
             theFloor.at(dragonPos.x).at(dragonPos.y).setState(dragonState);
             theFloor.at(dragonPos.x).at(dragonPos.y).notifyObservers();
+            enemies.emplace_back(dragonPos);
             dragonNum++;
         }
 
@@ -367,63 +466,199 @@ void Floor::init(Player*& player, int level, int suitLevel, std::default_random_
         theFloor.at(enemyPos.x).at(enemyPos.y).setState(s);
         theFloor.at(enemyPos.x).at(enemyPos.y).notifyObservers();
         enemies.emplace_back(enemyPos);
-        if (i == 10){ // could be any number
-            e->setCompass();
+    }
+    std::vector<Position> enemiesPositon = enemies;
+    std::shuffle(enemiesPositon.begin(), enemiesPositon.end(), rng);
+    for (int i = 0; i < enemiesPositon.size(); i++){
+        Cell& c = theFloor.at(enemiesPositon.at(i).x).at(enemiesPositon.at(i).y);
+        if (c.getCellType() != CellType::merchant){
+            c.getEnemy()->setCompass();
+            return;
+        }
+    }
+}
+
+void Floor::init(Player*& player, int level, int suitLevel, std::default_random_engine rng, const std::string filename){
+    this->player = player;
+    this->level = level;
+    this->rng = rng;
+    td = new TextDisplay(25, 79);
+    ad = new ActionDisplay();
+    mapGenerator(filename);
+    std::vector<std::vector<Position>> chambers = chamberConstruction();
+
+
+
+    // Player generation
+    int chamberNum = chamberRandomGeneration(1);
+    playerPos = randomPosition(chambers.at(chamberNum), 1);
+    this->player = player;
+    erase(chambers.at(chamberNum), playerPos);
+    theFloor.at(playerPos.x).at(playerPos.y).setType(CellType::player);
+    theFloor.at(playerPos.x).at(playerPos.y).setPlayer(player);
+    std::string message = player->getName() + " has spawned.";
+    State s = { playerPos, CellType::player, message };
+    theFloor.at(playerPos.x).at(playerPos.y).setState(s);
+    theFloor.at(playerPos.x).at(playerPos.y).notifyObservers();
+
+    // Stair generation
+    chamberNum = chamberRandomGeneration(2);
+    Position stairPos = randomPosition(chambers.at(chamberNum), 1);
+    stair = &(theFloor.at(stairPos.x).at(stairPos.y));
+
+
+    // generate suit if suitLevel matches level
+    if (suitLevel == level){
+        int chamberNum = chamberRandomGeneration(10);
+        Position suitPos = randomPosition(chambers.at(chamberNum), 10);
+        // Generate suit
+        Suit* s = new Suit(true, Position{ 114, 514 });
+        theFloor.at(suitPos.x).at(suitPos.y).setType(CellType::suit);
+        State suitState = { suitPos, CellType::suit, "" };
+        theFloor.at(suitPos.x).at(suitPos.y).setState(suitState);
+        theFloor.at(suitPos.x).at(suitPos.y).setSuit(s);
+        theFloor.at(suitPos.x).at(suitPos.y).notifyObservers();
+        items.emplace_back(suitPos);
+    }
+
+    // generate dragon 
+    int dragonNum = 0;
+    for (int i = 0; i < items.size(); i++){
+        Cell& c = theFloor.at(items.at(i).x).at(items.at(i).y);
+        if (c.getCellType() == CellType::gold && c.getGold()->getIsProtected()){
+            Position goldPos = items.at(i);
+            Gold* g = c.getGold();
+            Dragon<Gold>* d = new Dragon<Gold>(g);
+            std::vector<Position> availablePos;
+            for (int k = -1; k < 2; k++){
+                for (int j = -1; j < 2; j++){
+                    if (theFloor.at(goldPos.x + k).at(goldPos.y + j).getCellType() == CellType::tile){
+                        availablePos.emplace_back(Position{ goldPos.x + k, goldPos.y + j });
+                    }
+                }
+            }
+            Position dragonPos = randomPosition(availablePos, i);
+            theFloor.at(goldPos.x).at(goldPos.y).getGold()->setdp(dragonPos);
+            for (int k = 0; k < 5; k++){
+                for (int j = 0; j < chambers.at(k).size(); j++){
+                    if ((chambers.at(k).at(j).x == dragonPos.x) && (chambers.at(k).at(j).y == dragonPos.y)){
+                        chambers.at(k).erase(chambers.at(k).begin() + j);
+                    }
+                }
+            }
+            theFloor.at(dragonPos.x).at(dragonPos.y).setType(CellType::dragon);
+            theFloor.at(dragonPos.x).at(dragonPos.y).setEnemy(d);
+            State dragonState = { dragonPos, CellType::dragon, "" };
+            theFloor.at(dragonPos.x).at(dragonPos.y).setState(dragonState);
+            theFloor.at(dragonPos.x).at(dragonPos.y).notifyObservers();
+            enemies.emplace_back(dragonPos);
+            dragonNum++;
+        } else if (c.getCellType() == CellType::suit && c.getSuit()->getIsProtected()){
+            Position suitPos = items.at(i);
+            Suit* s = c.getSuit();
+            Dragon<Suit>* d = new Dragon<Suit>(s);
+            std::vector<Position> availablePos;
+            for (int k = -1; k < 2; k++){
+                for (int j = -1; j < 2; j++){
+                    if (theFloor.at(suitPos.x + k).at(suitPos.y + k).getCellType() == CellType::tile){
+                        availablePos.emplace_back(Position{ suitPos.x + k, suitPos.y + j });
+                    }
+                }
+            }
+            Position dragonPos = randomPosition(availablePos, 10);
+            theFloor.at(suitPos.x).at(suitPos.y).getSuit()->setdp(dragonPos);
+            erase(chambers[chamberNum], dragonPos);
+            theFloor.at(dragonPos.x).at(dragonPos.y).setType(CellType::dragon);
+            theFloor.at(dragonPos.x).at(dragonPos.y).setEnemy(d);
+            State dragonState = { dragonPos, CellType::dragon, "" };
+            theFloor.at(dragonPos.x).at(dragonPos.y).setState(dragonState);
+            theFloor.at(dragonPos.x).at(dragonPos.y).notifyObservers();
+            enemies.emplace_back(dragonPos);
+            dragonNum++;
+        }
+
+    }
+
+    // generate enemies
+    for (int i = 0; i < 20 - dragonNum; i++){
+        chamberNum = chamberRandomGeneration(i);
+        CellType enemy = enemyRandomGeneration(i);
+        Position enemyPos = randomPosition(chambers.at(chamberNum), i);
+        Enemy* e;
+        if (enemy == CellType::vampire){
+            e = new Vampire();
+        } else if (enemy == CellType::werewolf){
+            e = new Werewolf();
+        } else if (enemy == CellType::goblin){
+            e = new Goblin();
+        } else if (enemy == CellType::troll){
+            e = new Troll();
+        } else if (enemy == CellType::phoenix){
+            e = new Phoenix();
+        } else if (enemy == CellType::merchant){
+            e = new Merchant();
+        }
+        theFloor.at(enemyPos.x).at(enemyPos.y).setType(enemy);
+        theFloor.at(enemyPos.x).at(enemyPos.y).setEnemy(e);
+        State s = { enemyPos, enemy , "" };
+        theFloor.at(enemyPos.x).at(enemyPos.y).setState(s);
+        theFloor.at(enemyPos.x).at(enemyPos.y).notifyObservers();
+        enemies.emplace_back(enemyPos);
+    }
+    std::vector<Position> enemiesPositon = enemies;
+    std::shuffle(enemiesPositon.begin(), enemiesPositon.end(), rng);
+    for (int i = 0; i < enemiesPositon.size(); i++){
+        Cell& c = theFloor.at(enemiesPositon.at(i).x).at(enemiesPositon.at(i).y);
+        if (c.getCellType() != CellType::merchant){
+            c.getEnemy()->setCompass();
+            return;
         }
     }
 
-
-
 }
+
 
 void Floor::enemyAction(){
     for (int i = 0; i < enemies.size(); i++){
+        bool attacked = false;
         Position enemyPos = enemies.at(i);
         Cell& ec = theFloor.at(enemyPos.x).at(enemyPos.y);
         Enemy* e = ec.getEnemy();
         CellType enemyType = ec.getCellType();
+        e->clearDestinations();
         for (int i = -1; i < 2; i++){
             for (int j = -1; j < 2; j++){
-                CellType neighbor = theFloor.at(ec.getPos().x + i).at(ec.getPos().y + j).getCellType();
-                if (neighbor == CellType::player){
-                    Position pPos = theFloor.at(ec.getPos().x + i).at(ec.getPos().y + j).getPos();
-                    Player& p = *(theFloor.at(ec.getPos().x + i).at(ec.getPos().y + j).getPlayer());
-                    std::string action = e->attack(p);
-                    State s = { ec.getPos(),ec.getCellType(), action };
+                if ((i == 0) && (j == 0)){ continue; }
+                CellType neighbor = theFloor.at(enemyPos.x + i).at(enemyPos.y + j).getCellType();
+                if ((neighbor == CellType::player) && (e->getHostile())){
+                    std::string action = e->attack(*player);
+                    State s = { enemyPos,ec.getCellType(), action };
                     ec.setState(s);
                     ec.notifyObservers();
-                    if (p.getHp() <= 0){
-                        theFloor.at(pPos.x).at(pPos.y).setType(CellType::tile);
-                        theFloor.at(pPos.x).at(pPos.y).setState({ pPos, CellType::tile, "You lose!" });
-                        theFloor.at(pPos.x).at(pPos.y).notifyObservers();
-                        return;
+                    if (player->getHp() <= 0){
+                        theFloor.at(playerPos.x).at(playerPos.y).setType(CellType::tile);
+                        theFloor.at(playerPos.x).at(playerPos.y).setState({ playerPos, CellType::tile, "You lose!" });
+                        theFloor.at(playerPos.x).at(playerPos.y).notifyObservers();
                     }
+                    attacked = true;
+                    //break;
                 } else if (neighbor == CellType::tile){
-                    e->addDestination({ ec.getPos().x + i, ec.getPos().y + j });
+                    e->addDestination(Position{ enemyPos.x + i, enemyPos.y + j });
                 }
             }
         }
-        // Enemy move randomly
-        std::vector<Position> dest;
-        for (int i = 0; i < e->getDestinations().size(); i++){
-            dest.emplace_back(e->getDestinations().at(i));
+        if (attacked || enemyType == CellType::dragon){
+            continue;
         }
+        // Enemy move randomly
+        std::vector<Position> dest = e->getDestinations();
         std::shuffle(dest.begin(), dest.end(), rng);
         Position newPos = dest.at(0);
         enemies.at(i) = newPos;
-        if (stair != nullptr){
-            if (stair->getPos().x == ec.getPos().x && stair->getPos().y == ec.getPos().y){
-                stair->setEnemy(nullptr);
-                stair->setType(CellType::stair);
-                stair->setState({ stair->getPos(), CellType::stair, "" });
-                stair->notifyObservers();
-            }
-        } else{
-            ec.setEnemy(nullptr);
-            ec.setType(CellType::tile);
-            ec.setState({ enemyPos, CellType::tile, "" });
-            ec.notifyObservers();
-        }
+        ec.setEnemy(nullptr);
+        ec.setType(CellType::tile);
+        ec.setState({ enemyPos, CellType::tile, "" });
+        ec.notifyObservers();
         theFloor.at(newPos.x).at(newPos.y).setEnemy(e);
         theFloor.at(newPos.x).at(newPos.y).setType(enemyType);
         theFloor.at(newPos.x).at(newPos.y).setState({ newPos, enemyType, "" });
@@ -436,35 +671,35 @@ std::string Floor::navigation(Position dir){
     for (int i = -1; i < 2; i++){
         for (int j = -1; j < 2; j++){
             if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::goblin){
-                result += " and sees a Goblin.";
+                result += " and sees a Goblin";
             } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::vampire){
-                result += " and sees a Vampire.";
+                result += " and sees a Vampire";
             } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::troll){
-                result += " and sees a Troll.";
+                result += " and sees a Troll";
             } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::dragon){
-                result += " and sees a Dragon.";
+                result += " and sees a Dragon";
             } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::werewolf){
-                result += " and sees a Werewolf.";
+                result += " and sees a Werewolf";
             } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::merchant){
-                result += " and sees a Merchant.";
+                result += " and sees a Merchant";
             } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::phoenix){
-                result += " and sees a Phoenix.";
+                result += " and sees a Phoenix";
             } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::potion){
-                result += " and sees an unknown potion.";
+                result += " and sees an unknown potion";
             } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::gold){
                 if ((theFloor.at(dir.x + i).at(dir.y + j).getGold()->getIsProtected())){
-                    result += " and sees a dragon hoard.";
+                    result += " and sees a dragon hoard";
                 } else{
-                    result += " and sees a pile of golds.";
+                    result += " and sees a pile of golds";
                 }
             } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::suit){
                 if ((theFloor.at(dir.x + i).at(dir.y + j).getSuit()->getIsProtected())){
-                    result += "and sees a Barrier Suit protected by a dragon.";
+                    result += "and sees a Barrier Suit protected by a dragon";
                 } else{
-                    result += "and sees a Barrier Suit.";
+                    result += "and sees a Barrier Suit";
                 }
             } else if (theFloor.at(dir.x + i).at(dir.y + j).getCellType() == CellType::compass){
-                result += "and sees a Compass.";
+                result += "and sees a Compass";
             }
         }
     }
@@ -472,11 +707,12 @@ std::string Floor::navigation(Position dir){
 }
 
 void Floor::playerMove(Position dir){
-    Cell dest = theFloor.at(dir.x).at(dir.y);
+    Cell& dest = theFloor.at(dir.x).at(dir.y);
     State s = dest.getState();
     if ((s.type == CellType::tile) ||
         (s.type == CellType::passage) ||
-        (s.type == CellType::door)){
+        (s.type == CellType::door) ||
+        (s.type == CellType::stair)){
         dest.setPlayer(player);
         dest.setType(CellType::player);
         std::string nv = navigation(dir);
@@ -492,17 +728,23 @@ void Floor::playerMove(Position dir){
         dest.notifyObservers();
     } else if ((s.type == CellType::gold) && !(dest.getGold()->getIsProtected())){
         dest.setPlayer(player);
+        dest.setType(CellType::player);
         dest.getGold()->use(player);
         std::string display = "You picked up ";
-        // display += dest.getGold()->getValue();
+        display += dest.getGold()->getValue();
         display += " gold.";
         dest.setState({ dir, CellType::player, display });
+        dest.setGold(nullptr);
+        erase(items, dest.getPos());
         dest.notifyObservers();
     } else if ((s.type == CellType::suit) && !(dest.getSuit()->getIsProtected())){
         dest.setPlayer(player);
+        dest.setType(CellType::player);
         dest.getSuit()->use(player);
         std::string display = "You equipped the Barrier Suit.";
         dest.setState({ dir, CellType::player, display });
+        dest.setSuit(nullptr);
+        erase(items, dest.getPos());
         dest.notifyObservers();
     } else{
         throw Exception{};
@@ -512,23 +754,28 @@ void Floor::playerMove(Position dir){
     // If the player is on a passage/door
     for (int i = 0; i < passages.size(); i++){
         Position p = passages.at(i);
-        if (p.x == playerPos.x && p.y == playerPos.y){
+        if ((p.x == playerPos.x) && (p.y == playerPos.y)){
+            theFloor.at(p.x).at(p.y).setPlayer(nullptr);
             theFloor.at(p.x).at(p.y).setType(CellType::passage);
             theFloor.at(p.x).at(p.y).setState({ p, CellType::passage, "" });
             theFloor.at(p.x).at(p.y).notifyObservers();
+            playerPos = dir;
             return;
         }
     }
     for (int i = 0; i < doors.size(); i++){
         Position p = doors.at(i);
-        if (p.x == playerPos.x && p.y == playerPos.y){
+        if ((p.x == playerPos.x) && (p.y == playerPos.y)){
+            theFloor.at(p.x).at(p.y).setPlayer(nullptr);
             theFloor.at(p.x).at(p.y).setType(CellType::door);
             theFloor.at(p.x).at(p.y).setState({ p, CellType::door, "" });
             theFloor.at(p.x).at(p.y).notifyObservers();
+            playerPos = dir;
             return;
         }
     }
     // Recovers the previous tile
+    theFloor.at(playerPos.x).at(playerPos.y).setPlayer(nullptr);
     theFloor.at(playerPos.x).at(playerPos.y).setType(CellType::tile);
     theFloor.at(playerPos.x).at(playerPos.y).setState({ playerPos, CellType::tile, "" });
     theFloor.at(playerPos.x).at(playerPos.y).notifyObservers();
@@ -564,14 +811,46 @@ void Floor::playerAttack(Position dir){
                     enemies.erase(enemies.begin() + i);
                 }
             }
+            if (ct == CellType::merchant){
+                Gold* g = new Gold{ 4, false, Position{114, 514} };
+                items.emplace_back(dir);
+                target.setGold(g);
+                target.setType(CellType::gold);
+                target.setState({ dir, CellType::gold, "Merchant is dead and dropped a pile of gold." });
+                target.notifyObservers();
+                return;
+            }
+            if (target.getEnemy()->getCompass()){
+                target.setType(CellType::compass);
+                target.setState({ dir, CellType::compass, "A compass has dropped!" });
+                target.notifyObservers();
+                return;
+            }
+
             if (ct == CellType::dragon){
+                Position protectedPos;
+                int j = 0;
+                Gold* gold = nullptr;
+                Suit* suit = nullptr;
                 for (int i = 0; i < items.size(); i++){
-                    CellType t = theFloor.at(items.at(i).x).at(items.at(i).y).getCellType();
-                    if (t == CellType::suit){
-                        theFloor.at(items.at(i).x).at(items.at(i).y).getSuit()->setIsProtected(false);
+                    Position p = items.at(i);
+                    gold = theFloor.at(p.x).at(p.y).getGold();
+                    suit = theFloor.at(p.x).at(p.y).getSuit();
+                    if (((gold != nullptr) && (gold->getIsProtected())) || ((suit != nullptr) && suit->getIsProtected())){
+                        if (gold != nullptr){
+                            protectedPos = gold->getdp();
+                            j = 1;
+                        } else{
+                            protectedPos = suit->getdp();
+                            j = 2;
+                        }
                     }
-                    if (t == CellType::gold){
-                        theFloor.at(items.at(i).x).at(items.at(i).y).getGold()->setIsProtected(false);
+                }
+                if (protectedPos.x == dir.x && protectedPos.y == dir.y){
+                    if (j == 1){
+                        gold->setIsProtected(false);
+                    } else{
+                        suit->setIsProtected(false);
                     }
                 }
             }
@@ -590,20 +869,29 @@ void Floor::playerAttack(Position dir){
     }
 }
 
-void Floor::playerUse(Position dir){
-    Cell useCell = theFloor.at(dir.x).at(dir.y);
-    if (useCell.getPerpotion() != nullptr){
-        useCell.getPerpotion()->use(player);
-    } else if (useCell.getTempotion() != nullptr){
-        useCell.getTempotion()->use(player);
+bool Floor::playerUse(Position dir){
+    bool usetemp = false;
+    Cell& p = theFloor.at(dir.x).at(dir.y);
+    if (p.getPerpotion() != nullptr){
+        p.getPerpotion()->use(player);
+        p.setPerpotion(nullptr);
+    } else if (p.getTempotion() != nullptr){
+        p.getTempotion()->use(player);
+        usetemp = true;
+        p.setTempotion(nullptr);
     } else{
         throw Exception{};
-        return;
     }
+    p.setType(CellType::tile);
+    p.setState({ dir, CellType::tile, "" });
+    erase(items, dir);
+    p.notifyObservers();
+    return usetemp;
 }
 
 void Floor::goldnavigation(){
     for (auto item : items){
+        bool detected = false;
         if (theFloor.at(item.x).at(item.y).getCellType() == CellType::gold){
             if (theFloor.at(item.x).at(item.y).getGold()->getIsProtected()){
                 Position dp = theFloor.at(item.x).at(item.y).getGold()->getdp();
@@ -611,11 +899,13 @@ void Floor::goldnavigation(){
                     for (int j = -1; j < 2; j++){
                         if (theFloor.at(item.x + i).at(item.y + j).getCellType() == CellType::player){
                             theFloor.at(dp.x).at(dp.y).getEnemy()->setHostile(true);
-                            return;
+                            detected = true;
                         }
                     }
                 }
-                theFloor.at(dp.x).at(dp.y).getEnemy()->setHostile(false);
+                if (!detected){
+                    theFloor.at(dp.x).at(dp.y).getEnemy()->setHostile(false);
+                }
             }
         }
     }
@@ -661,5 +951,7 @@ bool Floor::isLost(){
     return false;
 }
 Floor::~Floor(){
+
     delete td;
+    delete ad;
 }

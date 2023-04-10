@@ -1,20 +1,17 @@
 #include "player.h"
 #include "enemy.h"
+#include <cmath>
 
-int ceiling(int num){
-    if (num % 2 == 0){
-        return num;
-    } else{
-        return num + 1;
-    }
-}
 
 std::string Player::attack(Enemy& whodefend){
-    int damage = ceiling((100 / (100 + whodefend.getDef())) * this->getAtk());
-    whodefend.setHp(this->getHp() - damage);
+    int damage = ceil((100 / (100 + whodefend.getDef())) * this->getAtk());
+    whodefend.setHp(whodefend.getHp() - damage);
     std::string result = this->getName() + " deals " + std::to_string(damage) + " damage to " + whodefend.getName() + ".";
     if (whodefend.getHp() <= 0){
         whodefend.setDead();
+        if ((whodefend.getName() != "Merchant") && (whodefend.getName() != "Dragon")){
+            this->addGold(1);
+        }
         return result + " " + whodefend.getName() + " is dead.";
     }
     return result;
@@ -22,7 +19,7 @@ std::string Player::attack(Enemy& whodefend){
 
 
 std::string Player::addGold(float plusgold){
-    gold = gold + plusgold;
+    gold += plusgold;
     return "You picked up " + std::to_string(gold) + " gold.";
 }
 
