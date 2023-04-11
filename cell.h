@@ -12,7 +12,7 @@ class Enemy;
 class Player;
 class Gold;
 class Suit;
-class Cell : public Subject<State>, public Observer<State>{
+class Cell : public Subject<State>{
     Position pos;
     CellType type;
     Player* player = nullptr;
@@ -22,13 +22,15 @@ class Cell : public Subject<State>, public Observer<State>{
     Tempotion* tempotion = nullptr;
     Perpotion* perpotion = nullptr;
     bool stairVisible = false;
-    std::vector<std::string> display;
+    std::string action;
 public:
-    Cell(Position pos, CellType type, Player* player, Enemy* enemy, Gold* gold, Suit* suit, Tempotion* tempotion, Perpotion* perpotion, bool stairVisible, std::vector<std::string> display) :
-        pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, gold{ gold }, suit{ suit }, tempotion{ tempotion }, perpotion{ perpotion }, stairVisible{ stairVisible }, display{ display }{
-        this->setState({ pos, type, player, enemy, gold, suit, tempotion, perpotion, stairVisible, display });
+    Cell(Position pos, CellType type, Player* player, Enemy* enemy, Gold* gold, Suit* suit, Tempotion* tempotion, Perpotion* perpotion, bool stairVisible, std::string action) :
+        pos{ pos }, type{ type }, player{ player }, enemy{ enemy }, gold{ gold }, suit{ suit }, tempotion{ tempotion }, perpotion{ perpotion }, stairVisible{ stairVisible }, action{ action }{
+        this->setState({ pos, type, action });
     }
-    Cell();
+    Cell(){
+        this->setState({ {114, 514}, CellType::empty, "" });
+    }
     void setPos(Position pos){
         this->pos = pos;
     }
@@ -56,8 +58,8 @@ public:
     void setStair(bool stairVisible){
         this->stairVisible = stairVisible;
     }
-    void setDisplay(std::vector<std::string> display){
-        this->display = display;
+    void setAction(std::string action){
+        this->action = action;
     }
     Position getPos(){
         return pos;
@@ -87,10 +89,16 @@ public:
     bool getStair(){
         return stairVisible;
     }
-    std::vector<std::string> getDisplay(){
-        return display;
+    std::string getAction(){
+        return action;
     }
-    void notify(Subject& whoNotified) override;
+    ~Cell(){
+        delete enemy;
+        delete gold;
+        delete suit;
+        delete tempotion;
+        delete perpotion;
+    }
 };
 
 #endif

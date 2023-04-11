@@ -4,7 +4,7 @@
 
 class Goblin : public Enemy{
 public:
-    Goblin() : Enemy("Goblin", 70, 5, 10) {}
+    Goblin() : Enemy("Goblin", 70, 5, 10){}
     // std::string dlcAttack(Player& whodefend) override;
 };
 

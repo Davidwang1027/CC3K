@@ -7,7 +7,7 @@ class Orc : public Player{
 public:
     Orc() : Player("Orc", 180, 180, 30, 25, 0){};
     std::string addGold(float new_gold) override{
-        gold = new_gold / 2;
+        gold += new_gold / 2;
         return std::to_string(gold);
     }
 };

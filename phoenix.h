@@ -5,7 +5,7 @@
 class Phoenix : public Enemy{
 public:
     Phoenix() : Enemy("Phoenix", 50, 35, 20){};
-    std::string dlcAttack(Player& whodefend) override;
+    // std::string dlcAttack(Player& whodefend) override;
 };
 
 #endif

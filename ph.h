@@ -5,6 +5,6 @@
 
 class PH : public Perpotion{
 public:
-    PH() : Perpotion{ -10 }{}
+    PH() : Perpotion{ -10, "PH" }{}
 };
 #endif

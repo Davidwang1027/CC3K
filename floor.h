@@ -7,24 +7,54 @@
 #include "item.h"
 #include "cell.h"
 #include "textdisplay.h"
+#include <random>
+#include "actiondisplay.h"
+#include "position.h"
 
+enum class Direction{ no, so, ea, we, ne, nw, se, sw };
 
 class Floor{
     std::vector<std::vector<Cell>> theFloor;
-    std::vector<Enemy> enemies;
-    std::vector<Item> items;
+    std::vector<Position> enemies;
+    std::vector<Position> items;
+    std::vector<Position> passages;
+    std::vector<Position> doors;
+    std::default_random_engine rng;
     TextDisplay* td;
+    ActionDisplay* ad;
     Cell* stair;
     // ob *ob;
     Player* player;
+    Position playerPos;
     int level;
+    int suitLevel;
+    int suitRandomGeneration(int shufflenumber);
+    int chamberRandomGeneration(int shufflenumber);
+    Position randomPosition(std::vector<Position>& chamber, int shufflenumber);
+    CellType enemyRandomGeneration(int shufflenumber);
+    int randomGenerationBasedOnProbability(std::vector<int> p, int shufflenumber);
 public:
+    Floor() = default;
+    std::default_random_engine getRng() const{ return rng; }
+    void mapGenerator(std::string filename);
     std::vector<std::vector<Position>> chamberConstruction();
-    void move();
+    void enemyAction();
+    void playerMove(Position dir);
+    void playerAttack(Position dir);
+    bool playerUse(Position dir);
+    void goldnavigation();
+    void suitnavigation();
+    bool isOnStair();
     bool isWon();
     bool isLost();
-    void init(Player* player, int level);
+    Player* getPlayer() const{ return player; }
+    void init(Player*& player, int level, int suitLevel, std::default_random_engine rng);
+    void init(Player*& player, int level, int suitLevel, std::default_random_engine rng, const std::string filename);
+    std::string navigation(Position dir);
+
+    Position getPlayerPos(){ return playerPos; }
     friend std::ostream& operator<<(std::ostream& out, const Floor& f);
+    ~Floor();
 };
 
 #endif

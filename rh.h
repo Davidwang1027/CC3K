@@ -5,6 +5,6 @@
 
 class RH : public Perpotion{
 public:
-    RH() : Perpotion{ 10 }{}
+    RH() : Perpotion{ 10 , "RH" }{}
 };
 #endif

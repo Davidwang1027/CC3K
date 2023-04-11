@@ -17,7 +17,6 @@ void TextDisplay::notify(Subject<State>& whoNotified){
     CellType ct = s.type;
     size_t r = s.pos.x;
     size_t c = s.pos.y;
-    bool sv = s.stairVisible;
     switch (ct){
     case CellType::vWall:
         theDisplay[r][c] = '|';
@@ -35,11 +34,7 @@ void TextDisplay::notify(Subject<State>& whoNotified){
         theDisplay[r][c] = '.';
         break;
     case CellType::stair:
-        if (sv){
-            theDisplay[r][c] = '\\';
-        } else{
-            theDisplay[r][c] = '.';
-        }
+        theDisplay[r][c] = '\\';
         break;
     case CellType::empty:
         theDisplay[r][c] = ' ';
@@ -74,6 +69,9 @@ void TextDisplay::notify(Subject<State>& whoNotified){
     case CellType::merchant:
         theDisplay[r][c] = 'M';
         break;
+    case CellType::werewolf:
+        theDisplay[r][c] = 'W';
+        break;
     case CellType::phoenix:
         theDisplay[r][c] = 'X';
         break;
@@ -91,18 +89,19 @@ std::ostream& operator<<(std::ostream& out, const TextDisplay& td){
                 out << "\033[31;2mV\033[0m";
                 break;
             case 'N':
-                out << "\033[32mG\033[0m";
+                out << "\033[32mN\033[0m";
                 break;
             case '\\':
-                out << "\033[31m@\033[0m";
+                out << "\033[38;2;128;0;128m\\\033[0m";
                 break;
             case 'G':
                 out << "\033[38;5;214mG\033[0m";
+                break;
             default:
                 out << col;
             }
-            out << std::endl;
         }
-        return out;
+        out << std::endl;
     }
+    return out;
 }
